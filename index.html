@@ -1,0 +1,2649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JAC Educa · Centro de gestión escolar</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JAC Educa">
+<meta name="theme-color" content="#0B1E33">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* ============================================================
+   JAC EDUCA — Design tokens
+   Paleta (modo claro): azul profundo / azul medio / turquesa / blanco / gris
+   Paleta (modo oscuro "Centinela"): negro verdoso / esmeralda / plata metálica
+   Tipografía: Oswald (display, dramático) + Inter (UI) + JetBrains Mono (datos/códigos)
+   ============================================================ */
+:root{
+  --ink-900:#0B1E33;      /* azul profundo — texto fuerte, sidebar */
+  --ink-800:#122B48;
+  --ink-700:#1B3A5C;      /* azul medio */
+  --ink-600:#28527F;
+  --turq-600:#0E8FA0;     /* turquesa principal */
+  --turq-500:#14A6B8;
+  --turq-400:#4FC6D2;
+  --turq-100:#E3F6F8;
+  --paper-0:#FFFFFF;
+  --paper-50:#F5F8FA;     /* fondo frío, no crema */
+  --paper-100:#EAF0F3;
+  --line:#DCE4E9;
+  --line-soft:#E9EEF1;
+  --gray-500:#5C7085;
+  --gray-400:#84939E;
+  --gray-300:#AEB9C2;
+  --success:#1F9D63;
+  --success-bg:#E5F6ED;
+  --warning:#B4700E;
+  --warning-bg:#FBF0DD;
+  --alert:#C13F3F;
+  --alert-bg:#FBEAEA;
+  --info:#2E6FD1;
+  --info-bg:#E9F0FC;
+  --glow-heading:none;
+  --metal-ink:var(--ink-900);
+
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:18px;
+  --shadow-1:0 1px 2px rgba(11,30,51,.06), 0 1px 1px rgba(11,30,51,.04);
+  --shadow-2:0 8px 24px rgba(11,30,51,.10);
+  --font-display:'Oswald', 'Space Grotesk', sans-serif;
+  --font-ui:'Inter', sans-serif;
+  --font-mono:'JetBrains Mono', monospace;
+
+  --sidebar-w:250px;
+  --topbar-h:60px;
+  --bottomnav-h:64px;
+
+  color-scheme: light;
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ink-900:#E7EFEA;
+  --ink-800:#D3E0D8;
+  --ink-700:#B9CCC0;
+  --paper-0:#0A100D;      /* negro verdoso — fondo principal */
+  --paper-50:#060B08;     /* casi negro */
+  --paper-100:#121C16;
+  --line:#22352A;
+  --line-soft:#1A2820;
+  --gray-500:#8FA598;
+  --gray-400:#6C8577;
+  --gray-300:#4C6355;
+  --turq-600:#2E8B57;     /* esmeralda — acento principal */
+  --turq-500:#3AA968;
+  --turq-400:#5FD08A;
+  --turq-100:#0F2418;
+  --success-bg:#0F2B1F;
+  --warning-bg:#2E230F;
+  --alert-bg:#2E1717;
+  --info-bg:#14233B;
+  --metal-ink:linear-gradient(180deg,#F1F6F3 0%,#AEC2B6 55%,#7C9488 100%);
+  --glow-heading:0 0 18px rgba(95,208,138,.35);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ink-900:#E7EFEA; --ink-800:#D3E0D8; --ink-700:#B9CCC0;
+    --paper-0:#0A100D; --paper-50:#060B08; --paper-100:#121C16;
+    --line:#22352A; --line-soft:#1A2820;
+    --gray-500:#8FA598; --gray-400:#6C8577; --gray-300:#4C6355;
+    --turq-600:#2E8B57; --turq-500:#3AA968; --turq-400:#5FD08A; --turq-100:#0F2418;
+    --success-bg:#0F2B1F; --warning-bg:#2E230F;
+    --alert-bg:#2E1717; --info-bg:#14233B;
+    --metal-ink:linear-gradient(180deg,#F1F6F3 0%,#AEC2B6 55%,#7C9488 100%);
+    --glow-heading:0 0 18px rgba(95,208,138,.35);
+  }
+}
+*,*::before,*::after{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0; font-family:var(--font-ui); background:var(--paper-50); color:var(--ink-900);
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+h1,h2,h3,h4{font-family:var(--font-display); margin:0; color:var(--ink-900); font-weight:600; text-shadow:var(--glow-heading);}
+h1{letter-spacing:.01em;}
+:root[data-theme="dark"] h1, :root:not([data-theme=light]) h1{text-transform:uppercase; letter-spacing:.04em;}
+@media (prefers-color-scheme: dark){:root:not([data-theme=light]) h1{text-transform:uppercase; letter-spacing:.04em;}}
+p{margin:0;}
+button{font-family:var(--font-ui); cursor:pointer;}
+input,select,textarea{font-family:var(--font-ui);}
+a{color:inherit;}
+::selection{background:var(--turq-400); color:var(--ink-900);}
+.mono{font-family:var(--font-mono);}
+
+/* Scrollbars */
+::-webkit-scrollbar{width:9px; height:9px;}
+::-webkit-scrollbar-thumb{background:var(--gray-300); border-radius:8px;}
+::-webkit-scrollbar-track{background:transparent;}
+
+/* ---------- Auth screen ---------- */
+#auth-screen{
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:
+    radial-gradient(1100px 600px at 12% -10%, var(--turq-100), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, var(--info-bg), transparent 55%),
+    var(--paper-50);
+  padding:24px;
+}
+.auth-card{
+  width:100%; max-width:400px; background:var(--paper-0); border:1px solid var(--line);
+  border-radius:var(--radius-lg); padding:36px 32px 28px; box-shadow:var(--shadow-2);
+}
+.brandmark{display:flex; align-items:center; gap:10px; margin-bottom:26px;}
+.brandmark .logo-glyph{width:38px; height:38px; flex:none;}
+.brandmark .word{font-family:var(--font-display); font-weight:700; font-size:20px; letter-spacing:.02em; text-transform:uppercase;}
+.brandmark .word b{color:var(--turq-600);}
+:root[data-theme="dark"] .brandmark .word, :root:not([data-theme=light]) .brandmark .word{
+  background:var(--metal-ink); -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:none; filter:drop-shadow(0 0 10px rgba(95,208,138,.25));
+}
+:root[data-theme="dark"] .brandmark .word b, :root:not([data-theme=light]) .brandmark .word b{
+  background:var(--metal-ink); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+:root[data-theme="dark"] #auth-screen, :root:not([data-theme=light]) #auth-screen{
+  background:
+    repeating-linear-gradient(100deg, rgba(95,208,138,.05) 0px, rgba(95,208,138,.05) 2px, transparent 2px, transparent 34px),
+    radial-gradient(900px 620px at 15% -10%, rgba(46,139,87,.20), transparent 60%),
+    radial-gradient(800px 520px at 105% 15%, rgba(20,40,30,.55), transparent 55%),
+    var(--paper-50);
+}
+:root[data-theme="dark"] .auth-card, :root:not([data-theme=light]) .auth-card{
+  box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(95,208,138,.06);
+}
+.auth-card h1{font-size:22px; margin-bottom:4px;}
+.auth-sub{color:var(--gray-500); font-size:13.5px; margin-bottom:22px;}
+.field{margin-bottom:14px;}
+.field label{display:block; font-size:12.5px; font-weight:600; color:var(--ink-700); margin-bottom:6px;}
+.field input,.field select,.field textarea{
+  width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:var(--radius-sm);
+  background:var(--paper-50); color:var(--ink-900); font-size:14px; outline:none;
+  transition:border-color .15s, box-shadow .15s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--turq-500); box-shadow:0 0 0 3px var(--turq-100);
+}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  border:1px solid transparent; border-radius:var(--radius-sm); padding:10px 16px;
+  font-size:13.5px; font-weight:600; transition:filter .12s, background .12s, transform .05s;
+  white-space:nowrap;
+}
+.btn:active{transform:translateY(1px);}
+.btn-primary{background:var(--ink-900); color:#fff;}
+.btn-primary:hover{filter:brightness(1.15);}
+:root[data-theme="dark"] .btn-primary, :root:not([data-theme=light]) .btn-primary{color:var(--ink-900); background:var(--turq-400);}
+@media (prefers-color-scheme: dark){:root:not([data-theme=light]) .btn-primary{background:var(--turq-400); color:#08161f;}}
+.btn-accent{background:var(--turq-600); color:#fff;}
+.btn-accent:hover{filter:brightness(1.08);}
+.btn-outline{background:transparent; border-color:var(--line); color:var(--ink-800);}
+.btn-outline:hover{background:var(--paper-100);}
+.btn-ghost{background:transparent; color:var(--gray-500); border-color:transparent;}
+.btn-ghost:hover{background:var(--paper-100); color:var(--ink-800);}
+.btn-danger{background:var(--alert); color:#fff;}
+.btn-danger:hover{filter:brightness(1.08);}
+.btn-block{width:100%;}
+.btn-sm{padding:7px 12px; font-size:12.5px;}
+.btn[disabled]{opacity:.5; cursor:not-allowed;}
+.auth-demo-note{margin-top:16px; font-size:12px; color:var(--gray-400); text-align:center; line-height:1.5;}
+
+/* ---------- App shell ---------- */
+#app-shell{display:none; min-height:100vh;}
+#app-shell.active{display:block;}
+
+.sidebar{
+  position:fixed; top:0; left:0; bottom:0; width:var(--sidebar-w); z-index:40;
+  background:var(--ink-900); color:#CBD9E4; display:flex; flex-direction:column;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.sidebar .side-head{padding:18px 18px 14px; display:flex; align-items:center; gap:10px; border-bottom:1px solid rgba(255,255,255,.08);}
+.sidebar .side-head .word{font-family:var(--font-display); font-weight:700; font-size:17px; color:#fff; letter-spacing:.02em; text-transform:uppercase;}
+.sidebar .side-head .word b{color:var(--turq-400);}
+:root[data-theme="dark"] .sidebar, :root:not([data-theme=light]) .sidebar{background:var(--paper-50); border-right-color:rgba(95,208,138,.08);}
+:root[data-theme="dark"] .sidebar .side-head .word, :root:not([data-theme=light]) .sidebar .side-head .word{
+  background:var(--metal-ink); -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 0 8px rgba(95,208,138,.3));
+}
+:root[data-theme="dark"] .sidebar .side-head .word b, :root:not([data-theme=light]) .sidebar .side-head .word b{
+  background:var(--metal-ink); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.school-chip{margin:14px 14px 6px; padding:10px 12px; border-radius:var(--radius-md); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08);}
+.school-chip .lbl{font-size:10px; letter-spacing:.04em; color:#8FA4B8; margin-bottom:3px;}
+.school-chip .val{font-size:13px; font-weight:600; color:#fff; display:flex; align-items:center; justify-content:space-between; gap:6px;}
+.cycle-chip{margin:0 14px 10px; padding:7px 12px; border-radius:var(--radius-md); background:rgba(79,198,210,.1); border:1px dashed rgba(79,198,210,.35); font-size:11.5px; color:var(--turq-400); display:flex; align-items:center; justify-content:space-between; cursor:pointer;}
+
+.side-nav{flex:1; overflow-y:auto; padding:6px 10px 10px;}
+.side-group-label{font-size:10.5px; letter-spacing:.06em; color:#66798C; padding:14px 10px 6px; font-weight:600;}
+.side-link{
+  display:flex; align-items:center; gap:10px; padding:8.5px 10px; border-radius:9px; font-size:13.5px;
+  color:#B9C9D6; margin-bottom:1px; position:relative; font-weight:500;
+}
+.side-link .ic{width:18px; text-align:center; flex:none; font-size:14px;}
+.side-link:hover{background:rgba(255,255,255,.055); color:#fff;}
+.side-link.active{background:linear-gradient(90deg, rgba(79,198,210,.16), rgba(79,198,210,.03)); color:#fff;}
+.side-link.active::before{content:""; position:absolute; left:-10px; top:6px; bottom:6px; width:3px; border-radius:3px; background:var(--turq-400);}
+.side-foot{padding:12px; border-top:1px solid rgba(255,255,255,.08); display:flex; align-items:center; gap:10px;}
+.avatar{width:32px; height:32px; border-radius:50%; background:var(--turq-500); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex:none;}
+.side-foot .who{flex:1; min-width:0;}
+.side-foot .who .nm{font-size:12.5px; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.side-foot .who .rl{font-size:11px; color:#7E93A5; display:flex; align-items:center; gap:5px;}
+.dot-online{width:6px; height:6px; border-radius:50%; background:var(--success); flex:none;}
+
+.main-area{margin-left:var(--sidebar-w); min-height:100vh; display:flex; flex-direction:column;}
+.topbar{
+  height:var(--topbar-h); border-bottom:1px solid var(--line); background:var(--paper-0);
+  display:flex; align-items:center; padding:0 22px; gap:14px; position:sticky; top:0; z-index:30;
+  padding-top:env(safe-area-inset-top,0px);
+}
+.topbar .crumb{font-size:12.5px; color:var(--gray-500);}
+.topbar .crumb b{color:var(--ink-900);}
+.topbar-search{flex:1; max-width:360px; position:relative; display:none;}
+.topbar-search input{width:100%; padding:8px 12px 8px 32px; border-radius:20px; border:1px solid var(--line); background:var(--paper-50); font-size:13px; outline:none;}
+.topbar-actions{margin-left:auto; display:flex; align-items:center; gap:8px;}
+.icon-btn{
+  width:34px; height:34px; border-radius:9px; border:1px solid var(--line); background:var(--paper-0);
+  display:flex; align-items:center; justify-content:center; font-size:15px; color:var(--ink-700); position:relative;
+}
+.icon-btn:hover{background:var(--paper-100);}
+.badge-dot{position:absolute; top:-3px; right:-3px; min-width:15px; height:15px; padding:0 3px; border-radius:8px; background:var(--alert); color:#fff; font-size:9.5px; font-weight:700; display:flex; align-items:center; justify-content:center; border:2px solid var(--paper-0);}
+
+.view{padding:22px 26px 90px; max-width:1180px;}
+.view-head{margin-bottom:20px;}
+.view-head h1{font-size:23px;}
+.view-head .sub{color:var(--gray-500); font-size:13px; margin-top:4px;}
+.view-head-row{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+.view-actions{display:flex; gap:8px; flex-wrap:wrap;}
+
+/* Cards / grids */
+.card{background:var(--paper-0); border:1px solid var(--line); border-radius:var(--radius-md); padding:18px;}
+.grid{display:grid; gap:14px;}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+@media (max-width:980px){.grid-4{grid-template-columns:repeat(2,1fr);} .grid-3{grid-template-columns:repeat(2,1fr);}}
+
+.stat-card{padding:15px 16px; border-radius:var(--radius-md); border:1px solid var(--line); background:var(--paper-0);}
+.stat-card .lbl{font-size:11.5px; color:var(--gray-500); font-weight:600; display:flex; align-items:center; gap:6px; margin-bottom:8px;}
+.stat-card .num{font-family:var(--font-display); font-size:26px; font-weight:700;}
+.stat-card .num small{font-size:14px; color:var(--gray-400); font-weight:500;}
+
+.quick-tile{
+  display:flex; flex-direction:column; gap:10px; padding:16px; border-radius:var(--radius-md);
+  border:1px solid var(--line); background:var(--paper-0); text-align:left; transition:border-color .12s, transform .08s, box-shadow .12s;
+}
+.quick-tile:hover{border-color:var(--turq-400); box-shadow:var(--shadow-1); transform:translateY(-1px);}
+.quick-tile .qi{width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px;}
+.quick-tile .qt{font-weight:600; font-size:13.5px;}
+.quick-tile .qd{font-size:11.5px; color:var(--gray-500);}
+
+.tag{display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:600;}
+.tag-success{background:var(--success-bg); color:var(--success);}
+.tag-warning{background:var(--warning-bg); color:var(--warning);}
+.tag-alert{background:var(--alert-bg); color:var(--alert);}
+.tag-info{background:var(--info-bg); color:var(--info);}
+.tag-gray{background:var(--paper-100); color:var(--gray-500);}
+
+.table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius-md); background:var(--paper-0);}
+table{width:100%; border-collapse:collapse; font-size:13px; min-width:560px;}
+thead th{
+  text-align:left; padding:10px 14px; font-size:11px; font-weight:700; color:var(--gray-500);
+  border-bottom:1px solid var(--line); white-space:nowrap; background:var(--paper-50); position:sticky; top:0;
+}
+tbody td{padding:9px 14px; border-bottom:1px solid var(--line-soft); vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--paper-50);}
+.grade-input{width:64px; padding:6px 8px; border:1px solid var(--line); border-radius:7px; font-size:13px; text-align:center; background:var(--paper-0); color:var(--ink-900);}
+.grade-input:focus{outline:none; border-color:var(--turq-500); box-shadow:0 0 0 3px var(--turq-100);}
+.grade-input.empty{background:var(--paper-100); color:var(--gray-400);}
+
+.empty-state{padding:44px 20px; text-align:center; color:var(--gray-500);}
+.empty-state .ei{font-size:30px; margin-bottom:10px;}
+.empty-state .et{font-weight:600; color:var(--ink-800); margin-bottom:4px; font-size:14.5px;}
+.empty-state .ed{font-size:12.5px; margin-bottom:14px;}
+
+.toast-stack{position:fixed; bottom:20px; right:20px; z-index:200; display:flex; flex-direction:column; gap:8px; max-width:320px;}
+.toast{background:var(--ink-900); color:#fff; padding:11px 14px; border-radius:10px; font-size:12.5px; box-shadow:var(--shadow-2); display:flex; align-items:center; gap:8px; animation:toastIn .18s ease;}
+.toast.success{background:var(--success);}
+.toast.alert{background:var(--alert);}
+@keyframes toastIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+.modal-backdrop{position:fixed; inset:0; background:rgba(11,30,51,.5); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(1px);}
+.modal{background:var(--paper-0); border-radius:var(--radius-lg); width:100%; max-width:460px; max-height:88vh; overflow-y:auto; box-shadow:var(--shadow-2); border:1px solid var(--line);}
+.modal.modal-lg{max-width:680px;}
+.modal-head{padding:18px 20px 4px; display:flex; align-items:flex-start; justify-content:space-between; gap:10px;}
+.modal-head h3{font-size:17px;}
+.modal-body{padding:14px 20px 20px;}
+.modal-foot{padding:14px 20px 20px; display:flex; justify-content:flex-end; gap:8px; border-top:1px solid var(--line-soft); margin-top:6px; padding-top:14px;}
+.close-x{width:28px; height:28px; border-radius:8px; border:none; background:transparent; color:var(--gray-500); font-size:16px; display:flex; align-items:center; justify-content:center; flex:none;}
+.close-x:hover{background:var(--paper-100);}
+.check-row{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line-soft); font-size:13.5px;}
+.check-row:last-child{border-bottom:none;}
+.check-row input{width:17px; height:17px; accent-color:var(--turq-600);}
+
+/* Bottom nav (mobile) */
+.bottom-nav{
+  display:none; position:fixed; bottom:0; left:0; right:0; height:var(--bottomnav-h); background:var(--paper-0);
+  border-top:1px solid var(--line); z-index:50; padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.bottom-nav .bn-row{height:var(--bottomnav-h); display:flex; align-items:stretch;}
+.bn-item{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; font-size:10px; color:var(--gray-400); font-weight:600;}
+.bn-item .ic{font-size:18px;}
+.bn-item.active{color:var(--turq-600);}
+.bn-fab-row{position:fixed; bottom:calc(var(--bottomnav-h) + 10px + env(safe-area-inset-bottom,0px)); left:0; right:0; display:none; justify-content:center; z-index:49; pointer-events:none;}
+.sheet-backdrop{position:fixed; inset:0; background:rgba(11,30,51,.45); z-index:99; display:none;}
+.sheet{position:fixed; left:0; right:0; bottom:0; background:var(--paper-0); border-radius:18px 18px 0 0; z-index:100; padding:10px 16px calc(20px + env(safe-area-inset-bottom,0px)); box-shadow:var(--shadow-2); display:none;}
+.sheet-handle{width:36px; height:4px; background:var(--line); border-radius:4px; margin:6px auto 14px;}
+.sheet-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+.sheet-grid button{display:flex; flex-direction:column; align-items:center; gap:6px; background:none; border:none; font-size:11px; color:var(--ink-800); font-weight:600;}
+.sheet-grid .qi{width:44px; height:44px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:19px;}
+
+@media (max-width:640px){ .save-indicator{display:none;} }
+@media (max-width:980px){
+  .sidebar{display:none;}
+  .main-area{margin-left:0;}
+  .bottom-nav{display:block;}
+  .view{padding:16px 16px calc(90px + var(--bottomnav-h));}
+  .grid-4{grid-template-columns:repeat(2,1fr);}
+  .grid-3{grid-template-columns:1fr 1fr;}
+  .grid-2{grid-template-columns:1fr;}
+  .topbar{padding:0 14px;}
+}
+.hidden{display:none !important;}
+.flexrow{display:flex; align-items:center; gap:8px;}
+.spacer{flex:1;}
+.small-muted{font-size:11.5px; color:var(--gray-500);}
+.section-title{font-size:14px; font-weight:700; margin:22px 0 10px; display:flex; align-items:center; gap:8px;}
+.section-title .n{color:var(--gray-400); font-weight:600;}
+.divider{height:1px; background:var(--line); margin:16px 0;}
+.pill-tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px;}
+.pill-tab{padding:7px 13px; border-radius:20px; font-size:12.5px; font-weight:600; border:1px solid var(--line); background:var(--paper-0); color:var(--gray-500);}
+.pill-tab.active{background:var(--ink-900); color:#fff; border-color:var(--ink-900);}
+:root[data-theme="dark"] .pill-tab.active, :root:not([data-theme=light]) .pill-tab.active{background:var(--turq-500); border-color:var(--turq-500); color:#06161c;}
+.progress-track{height:6px; border-radius:6px; background:var(--paper-100); overflow:hidden;}
+.progress-fill{height:100%; border-radius:6px; background:var(--turq-500);}
+.avatar-sm{width:26px; height:26px; border-radius:50%; background:var(--info-bg); color:var(--info); display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700; flex:none;}
+</style>
+</head>
+<body>
+
+<div id="auth-screen"></div>
+
+<div id="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-area">
+    <header class="topbar" id="topbar"></header>
+    <main class="view" id="view"></main>
+  </div>
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+  <div class="sheet-backdrop" id="sheet-backdrop"></div>
+  <div class="sheet" id="quick-sheet"></div>
+</div>
+
+<div id="modal-root"></div>
+<div class="toast-stack" id="toast-stack"></div>
+
+<script>
+/* ============================================================
+   JAC EDUCA — motor de datos (demo, ficticio, en localStorage)
+   ============================================================ */
+const STORE_KEY = 'jac_educa_state_v1';
+const NAMES_A = ["María","José","Ana","Luis","Fernanda","Carlos","Daniela","Jesús","Valeria","Miguel","Ximena","Diego","Camila","Emiliano","Regina","Santiago","Paulina","Alejandro","Mariana","Iker","Renata","Sebastián","Andrea","Rodrigo","Fátima","Leonardo","Itzel","Kevin","Zoe","Matías","Abril","Uriel","Sofía","Bryan","Ainara","Gael"];
+const APELLIDOS = ["Hernández","García","Martínez","López","González","Pérez","Sánchez","Ramírez","Torres","Flores","Rivera","Gómez","Díaz","Reyes","Morales","Cruz","Ortiz","Chávez","Jiménez","Vargas","Castillo","Mendoza","Aguilar","Vega","Domínguez","Delgado","Rojas","Cordero","Salcido","Nevárez"];
+
+function seedName(seed){
+  const r1 = seed*9301+49297, r2 = seed*4111+2003;
+  const n = NAMES_A[Math.abs(r1)%NAMES_A.length];
+  const a1 = APELLIDOS[Math.abs(r2)%APELLIDOS.length];
+  const a2 = APELLIDOS[Math.abs(r1+r2)%APELLIDOS.length];
+  return `${n} ${a1} ${a2}`;
+}
+
+function buildStudents(groupCode, count, seedBase){
+  const arr = [];
+  for(let i=0;i<count;i++){
+    const seed = seedBase*97 + i*13 + 5;
+    const nombre = seedName(seed);
+    arr.push({
+      id: `al-${groupCode}-${String(i+1).padStart(2,'0')}`,
+      nombre,
+      matricula: `256${groupCode}${String(i+1).padStart(3,'0')}`,
+      grupo: groupCode
+    });
+  }
+  return arr;
+}
+
+const GROUP_DEFS = [
+  {code:'1A', tot:35}, {code:'1B', tot:35}, {code:'1C', tot:34},
+  {code:'1D', tot:35}, {code:'1E', tot:34}, {code:'1F', tot:33},
+];
+
+function defaultState(){
+  const classes = GROUP_DEFS.map((g,idx)=>({
+    id:`cl-${g.code}`,
+    grado:'1°',
+    grupo:g.code.slice(1),
+    grupoCodigo:g.code,
+    materia:'Geografía',
+    docente:'José Antonio Carreón Favela',
+    ciclo:'2026-2027',
+    alumnos: buildStudents(g.code, g.tot, idx+1),
+    horario: ['Lun','Mié','Vie'][idx%3] + ' · ' + (['07:30','09:00','09:45','11:00','11:45','13:00'][idx]),
+    ponderaciones:{ actividades:30, proyectos:25, evaluaciones:30, participacion:10, extra:5 },
+  }));
+
+  const today = new Date();
+  const iso = today.toISOString().slice(0,10);
+
+  return {
+    version:1,
+    theme:'dark',
+    themeVersion:2,
+    onboarded:true,
+    docente:{
+      nombre:'José Antonio Carreón Favela',
+      correo:'jacf1390@gmail.com',
+      rol:'Docente',
+      iniciales:'JC'
+    },
+    escuela:{
+      nombre:'Escuela Secundaria Técnica 56',
+      cct:'08DST0056Q',
+      nivel:'Secundaria',
+      turno:'Vespertino',
+      localidad:'Ciudad Juárez',
+      municipio:'Juárez',
+      estado:'Chihuahua',
+      zona:'Zona 12',
+      sector:'Sector III',
+      director:'Mtra. Leticia Bermúdez Ortega',
+      ciclo:'2026-2027'
+    },
+    ciclosDisponibles:['2025-2026','2026-2027','2027-2028'],
+    escalaPrecision:'decimas', // enteros | decimas | centesimas
+    politicaNoEntregado:'sin_calificar', // sin_calificar | cero | pendiente
+    classes,
+    activities:[], // {id, classId, titulo, tipo, evaluable, fecha, estado}
+    submissions:[], // {id, activityId, studentId, estado, entregaFecha}
+    grades:[], // {id, activityId, studentId, valor(null=sin calificar), comentario, actualizadoEn, historial:[]}
+    sessions:[], // sesiones de clase (QR)
+    qrScans:[], // {sessionId, studentId, hora, tipo:'presente'|'retardo'}
+    bitacora:[], // {id, classId, sessionId, fecha, hora, tema, actividad, asistenciaResumen, observaciones, incidencias, acuerdos, pendientes, auto}
+    incidents:[], // {id, studentId, classId, fecha, categoria, descripcion, estado, evidencia}
+    justifications:[], // {id, studentId, classId, fecha, motivo, estado}
+    projects:[
+      {id:'pr-1', nombre:'Feria de las Ciencias de la Tierra', categoria:'académicos', estado:'en curso', responsable:'José Antonio Carreón Favela', inicio: iso, fin:'', progreso:45, actividades:6, evidencias:2},
+      {id:'pr-2', nombre:'Campaña de reforestación escolar', categoria:'mejora escolar', estado:'planeación', responsable:'José Antonio Carreón Favela', inicio: iso, fin:'', progreso:10, actividades:2, evidencias:0},
+    ],
+    teams:[],
+    layouts:{}, // classId -> {tipo, guardadoEn}
+    announcements:[
+      {id:'an-1', autor:'Dirección', texto:'Recuerden entregar planeaciones del bimestre antes del viernes.', fecha: iso, reacciones:3, comentarios:1},
+      {id:'an-2', autor:'Coordinación de Geografía', texto:'Se comparte el mapa curricular actualizado para 1er grado.', fecha: iso, reacciones:5, comentarios:0},
+    ],
+    messages:[
+      {id:'m-1', de:'Coordinación Académica', preview:'¿Cómo va el avance del bimestre en 1°D?', fecha: iso, leido:false},
+      {id:'m-2', de:'Mtra. Bermúdez (Dirección)', preview:'Buen trabajo con la sesión QR de ayer.', fecha: iso, leido:true},
+    ],
+    notifications:[],
+    reports:[],
+    documents:[],
+    questionBank:[
+      {id:'q-1', pregunta:'¿Cuál es el componente natural que estudia el relieve terrestre?', tipo:'opcion_multiple', opciones:['Componente social','Componente natural','Componente económico','Componente cultural'], correcta:1, dificultad:'básica', tema:'Espacio geográfico', materia:'Geografía'},
+      {id:'q-2', pregunta:'Las corrientes marinas son parte del componente natural.', tipo:'vf', opciones:['Verdadero','Falso'], correcta:0, dificultad:'básica', tema:'Componentes naturales', materia:'Geografía'},
+    ],
+    evaluations:[],
+    activeClassId:null,
+    activeSessionId:null,
+    nextId:1000,
+  };
+}
+
+let STATE = null;
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw){ STATE = JSON.parse(raw); return; }
+  }catch(e){ console.warn('No se pudo leer almacenamiento local', e); }
+  STATE = defaultState();
+}
+let lastSavedAt = null, saveFailed = false;
+function saveState(){
+  try{
+    localStorage.setItem(STORE_KEY, JSON.stringify(STATE));
+    lastSavedAt = Date.now(); saveFailed = false;
+  }catch(e){
+    console.warn('No se pudo guardar', e); saveFailed = true;
+  }
+  updateSaveIndicator();
+}
+function updateSaveIndicator(){
+  const el = document.getElementById('save-indicator');
+  if(!el) return;
+  if(saveFailed){ el.textContent = '⚠ No se pudo guardar en este dispositivo'; el.style.color='var(--alert)'; return; }
+  if(!lastSavedAt){ el.textContent=''; return; }
+  const secs = Math.round((Date.now()-lastSavedAt)/1000);
+  el.style.color='var(--gray-400)';
+  el.textContent = secs<2 ? 'Guardado' : secs<60 ? `Guardado hace ${secs}s` : 'Guardado';
+}
+setInterval(updateSaveIndicator, 4000);
+function uid(prefix){ STATE.nextId += 1; return `${prefix}-${STATE.nextId}`; }
+
+function getClass(id){ return STATE.classes.find(c=>c.id===id); }
+function getStudent(classId, studentId){ const c=getClass(classId); return c ? c.alumnos.find(a=>a.id===studentId) : null; }
+function classLabel(c){ return `${c.grado}${c.grupo} ${c.materia}`; }
+
+function notify(text, kind){
+  STATE.notifications.unshift({id:uid('ntf'), texto:text, fecha:new Date().toISOString(), leido:false, kind:kind||'info'});
+  if(STATE.notifications.length>40) STATE.notifications.length=40;
+}
+
+/* ============================================================
+   Utilidades UI: toast, modal, formato
+   ============================================================ */
+function toast(msg, kind){
+  const stack = document.getElementById('toast-stack');
+  const el = document.createElement('div');
+  el.className = 'toast' + (kind ? ' '+kind : '');
+  el.innerHTML = `<span>${msg}</span>`;
+  stack.appendChild(el);
+  setTimeout(()=>{ el.style.transition='opacity .25s'; el.style.opacity='0'; setTimeout(()=>el.remove(),250); }, 2600);
+}
+function openModal(html, opts){
+  closeModal();
+  const root = document.getElementById('modal-root');
+  const bd = document.createElement('div');
+  bd.className = 'modal-backdrop';
+  bd.id = 'active-modal-backdrop';
+  bd.innerHTML = `<div class="modal ${opts&&opts.lg?'modal-lg':''}">${html}</div>`;
+  bd.addEventListener('mousedown', (e)=>{ if(e.target===bd) closeModal(); });
+  root.appendChild(bd);
+}
+function closeModal(){
+  const bd = document.getElementById('active-modal-backdrop');
+  if(bd) bd.remove();
+}
+function fmtDate(iso){
+  if(!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('es-MX', {day:'2-digit', month:'short', year:'numeric'});
+}
+function fmtTime(iso){
+  const d = new Date(iso);
+  return d.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+}
+function roundGrade(v){
+  const prec = STATE.escalaPrecision;
+  if(v===null || v===undefined || v==='') return null;
+  const n = parseFloat(v);
+  if(isNaN(n)) return null;
+  if(prec==='enteros') return Math.round(n);
+  if(prec==='centesimas') return Math.round(n*100)/100;
+  return Math.round(n*10)/10;
+}
+function clampGrade(v){
+  if(v===null) return null;
+  return Math.max(0, Math.min(10, v));
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============================================================
+   Router
+   ============================================================ */
+const ROUTES = [
+  {hash:'#/inicio', label:'Centro de mando', icon:'🏠', group:null},
+  {hash:'#/escuela', label:'Mi escuela', icon:'🏫', group:'Escuela'},
+  {hash:'#/clases', label:'Mis clases', icon:'📚', group:'Escuela'},
+  {hash:'#/grupos', label:'Grupos', icon:'👥', group:'Escuela'},
+  {hash:'#/alumnos', label:'Alumnos', icon:'🧑‍🎓', group:'Escuela'},
+  {hash:'#/directorio', label:'Directorio', icon:'👤', group:'Escuela'},
+  {hash:'#/acomodo', label:'Acomodo del salón', icon:'🪑', group:'Escuela'},
+  {hash:'#/horarios', label:'Horarios', icon:'📅', group:'Escuela'},
+  {hash:'#/asistencia', label:'Asistencia', icon:'✅', group:'Aula'},
+  {hash:'#/tareas', label:'Tareas', icon:'📝', group:'Aula'},
+  {hash:'#/actividades', label:'Actividades', icon:'📋', group:'Aula'},
+  {hash:'#/bitacora', label:'Bitácora', icon:'📓', group:'Aula'},
+  {hash:'#/evaluaciones', label:'Evaluaciones', icon:'🧪', group:'Evaluación'},
+  {hash:'#/banco', label:'Banco de preguntas', icon:'📚', group:'Evaluación'},
+  {hash:'#/analitica', label:'Analítica', icon:'📊', group:'Evaluación'},
+  {hash:'#/calificaciones', label:'Calificaciones', icon:'📈', group:'Evaluación'},
+  {hash:'#/monitor', label:'Monitor', icon:'🔎', group:'Seguimiento'},
+  {hash:'#/incidencias', label:'Incidencias', icon:'⚠️', group:'Seguimiento'},
+  {hash:'#/justificantes', label:'Justificantes', icon:'📑', group:'Seguimiento'},
+  {hash:'#/proyectos', label:'Proyectos', icon:'📂', group:'Seguimiento'},
+  {hash:'#/equipos', label:'Equipos', icon:'👥', group:'Seguimiento'},
+  {hash:'#/avisos', label:'Avisos', icon:'📢', group:'Comunidad'},
+  {hash:'#/comunidad', label:'Comunidad', icon:'💬', group:'Comunidad'},
+  {hash:'#/mensajes', label:'Mensajes', icon:'✉️', group:'Comunidad'},
+  {hash:'#/calendario', label:'Calendario', icon:'🗓️', group:'Comunidad'},
+  {hash:'#/reportes', label:'Reportes', icon:'📄', group:'Documentos'},
+  {hash:'#/visor', label:'Visor de reportes', icon:'🔍', group:'Documentos'},
+  {hash:'#/documentos', label:'Documentos', icon:'🗂️', group:'Documentos'},
+  {hash:'#/expediente', label:'Expediente digital', icon:'🗃️', group:'Documentos'},
+  {hash:'#/configuracion', label:'Configuración', icon:'⚙️', group:null},
+];
+
+function currentRoute(){
+  const h = location.hash || '#/inicio';
+  return h.split('?')[0];
+}
+function routeParam(name){
+  const h = location.hash;
+  const q = h.split('?')[1];
+  if(!q) return null;
+  const params = new URLSearchParams(q);
+  return params.get(name);
+}
+function navigate(hash){ location.hash = hash; }
+
+window.addEventListener('hashchange', render);
+
+function render(){
+  if(!STATE.onboarded){ return; }
+  renderSidebar();
+  renderTopbar();
+  renderBottomNav();
+  const view = document.getElementById('view');
+  const route = currentRoute();
+  view.innerHTML = viewFor(route);
+  afterRenderHooks(route);
+  window.scrollTo(0,0);
+  saveState();
+}
+
+function viewFor(route){
+  try{
+    switch(true){
+      case route==='#/inicio': return viewInicio();
+      case route==='#/escuela': return viewEscuela();
+      case route==='#/clases': return viewClases();
+      case route.startsWith('#/clase/'): return viewClaseHub(route.split('/')[2]);
+      case route==='#/grupos': return viewGrupos();
+      case route==='#/alumnos': return viewAlumnos();
+      case route==='#/directorio': return viewDirectorio();
+      case route==='#/acomodo': return viewAcomodo();
+      case route==='#/horarios': return viewHorarios();
+      case route==='#/asistencia': return viewAsistencia();
+      case route==='#/tareas': return viewTareas();
+      case route==='#/actividades': return viewActividades();
+      case route==='#/bitacora': return viewBitacora();
+      case route==='#/evaluaciones': return viewEvaluaciones();
+      case route==='#/banco': return viewBanco();
+      case route==='#/analitica': return viewAnalitica();
+      case route==='#/calificaciones': return viewCalificaciones();
+      case route==='#/monitor': return viewMonitor();
+      case route==='#/incidencias': return viewIncidencias();
+      case route==='#/justificantes': return viewJustificantes();
+      case route==='#/proyectos': return viewProyectos();
+      case route==='#/equipos': return viewEquipos();
+      case route==='#/avisos': return viewAvisos();
+      case route==='#/comunidad': return viewComunidad();
+      case route==='#/mensajes': return viewMensajes();
+      case route==='#/calendario': return viewCalendario();
+      case route==='#/reportes': return viewReportes();
+      case route==='#/visor': return viewVisor();
+      case route==='#/documentos': return viewDocumentos();
+      case route==='#/expediente': return viewExpediente();
+      case route==='#/configuracion': return viewConfiguracion();
+      case route.startsWith('#/sesion/'): return viewSesion(route.split('/')[2]);
+      default: return viewInicio();
+    }
+  }catch(err){
+    console.error(err);
+    return `<div class="empty-state"><div class="ei">⚠️</div><div class="et">Algo no cargó bien en esta vista</div><div class="ed">${escapeHtml(err.message)}</div></div>`;
+  }
+}
+function afterRenderHooks(route){
+  if(route.startsWith('#/sesion/')) hookSesion(route.split('/')[2]);
+  if(route==='#/calificaciones') hookCalificaciones();
+}
+
+/* ============================================================
+   Shell: sidebar, topbar, bottom nav, sheet
+   ============================================================ */
+const GROUPS_ORDER = ['Escuela','Aula','Evaluación','Seguimiento','Comunidad','Documentos'];
+const LOGO_SVG = `<svg class="logo-glyph" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <rect width="40" height="40" rx="11" fill="var(--turq-600)"/>
+  <path d="M11 17.5L20 12l9 5.5-9 5.5-9-5.5Z" fill="#fff"/>
+  <path d="M14.5 19.6v5.1c0 1.9 2.5 3.3 5.5 3.3s5.5-1.4 5.5-3.3v-5.1" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <path d="M27.5 18.2v5.6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+</svg>`;
+
+function renderSidebar(){
+  const el = document.getElementById('sidebar');
+  const route = currentRoute();
+  const top = ROUTES.filter(r=>!r.group);
+  let html = `<div class="side-head">${LOGO_SVG}<span class="word">JAC <b>Educa</b></span></div>`;
+  html += `<div class="school-chip"><div class="lbl">ESCUELA ACTIVA</div><div class="val"><span>${escapeHtml(STATE.escuela.nombre.replace('Escuela ',''))}</span></div></div>`;
+  html += `<div class="cycle-chip" onclick="openCicloModal()"><span>Ciclo ${STATE.escuela.ciclo}</span><span>▾</span></div>`;
+  html += `<nav class="side-nav">`;
+  html += sideLink(top[0], route);
+  GROUPS_ORDER.forEach(g=>{
+    html += `<div class="side-group-label">${g.toUpperCase()}</div>`;
+    ROUTES.filter(r=>r.group===g).forEach(r=> html += sideLink(r, route));
+  });
+  html += `<div class="side-group-label">SISTEMA</div>`;
+  html += sideLink(top[1], route);
+  html += `</nav>`;
+  html += `<div class="side-foot">
+    <div class="avatar">${STATE.docente.iniciales}</div>
+    <div class="who"><div class="nm">${escapeHtml(STATE.docente.nombre)}</div><div class="rl"><span class="dot-online"></span>${STATE.docente.rol} · en línea</div></div>
+    <button class="icon-btn" title="Cerrar sesión" onclick="logout()">⏻</button>
+  </div>`;
+  el.innerHTML = html;
+}
+function sideLink(r, route){
+  const active = route===r.hash || (r.hash==='#/clases' && route.startsWith('#/clase/'));
+  return `<a class="side-link ${active?'active':''}" href="${r.hash}"><span class="ic">${r.icon}</span>${r.label}</a>`;
+}
+
+const TITLES = {};
+ROUTES.forEach(r=> TITLES[r.hash]=r.label);
+function routeTitle(route){
+  if(route.startsWith('#/clase/')){ const c=getClass(route.split('/')[2]); return c?classLabel(c):'Clase'; }
+  if(route.startsWith('#/sesion/')) return 'Sesión de clase';
+  return TITLES[route] || 'JAC Educa';
+}
+function renderTopbar(){
+  const el = document.getElementById('topbar');
+  const route = currentRoute();
+  const unread = STATE.notifications.filter(n=>!n.leido).length;
+  el.innerHTML = `
+    <div class="crumb">JAC Educa / <b>${escapeHtml(routeTitle(route))}</b></div>
+    <div class="topbar-actions">
+      <span id="save-indicator" class="small-muted save-indicator"></span>
+      <button class="icon-btn" title="Notificaciones" onclick="openNotifPanel()">🔔${unread?`<span class="badge-dot">${unread}</span>`:''}</button>
+      <button class="icon-btn" title="Cambiar tema" onclick="toggleTheme()">${STATE.theme==='dark'?'☀️':'🌙'}</button>
+      <button class="btn btn-accent btn-sm" onclick="quickStartSession()">⚡ Iniciar sesión de clase</button>
+    </div>`;
+}
+
+function renderBottomNav(){
+  const el = document.getElementById('bottom-nav');
+  const route = currentRoute();
+  const items = [
+    {hash:'#/inicio', label:'Inicio', icon:'🏠'},
+    {hash:'#/clases', label:'Clases', icon:'📚'},
+    {hash:'#/monitor', label:'Seguimiento', icon:'🔎'},
+    {hash:'#/comunidad', label:'Comunidad', icon:'💬'},
+    {hash:'#more', label:'Más', icon:'⋯'},
+  ];
+  el.innerHTML = `<div class="bn-row">` + items.map(it=>{
+    const active = it.hash===route || (it.hash==='#/clases' && route.startsWith('#/clase'));
+    if(it.hash==='#more'){
+      return `<a class="bn-item" href="javascript:void(0)" onclick="openMoreSheet()"><span class="ic">${it.icon}</span>${it.label}</a>`;
+    }
+    return `<a class="bn-item ${active?'active':''}" href="${it.hash}"><span class="ic">${it.icon}</span>${it.label}</a>`;
+  }).join('') + `</div>`;
+}
+
+function openMoreSheet(){
+  const bd = document.getElementById('sheet-backdrop');
+  const sh = document.getElementById('quick-sheet');
+  const more = ROUTES.filter(r=>!['#/inicio','#/clases'].includes(r.hash));
+  sh.innerHTML = `<div class="sheet-handle"></div>
+    <div class="section-title" style="margin-top:0">Acceso rápido</div>
+    <div class="sheet-grid" style="margin-bottom:18px;">
+      <button onclick="closeSheet(); quickStartSession()"><span class="qi" style="background:var(--turq-100); color:var(--turq-600)">🧑‍🎓</span>Asistencia</button>
+      <button onclick="closeSheet(); navigate('#/actividades')"><span class="qi" style="background:var(--info-bg); color:var(--info)">✏️</span>Evaluar</button>
+      <button onclick="closeSheet(); navigate('#/actividades')"><span class="qi" style="background:var(--warning-bg); color:var(--warning)">📋</span>Actividad</button>
+      <button onclick="closeSheet(); openNotifPanel()"><span class="qi" style="background:var(--alert-bg); color:var(--alert)">🔔</span>Notif.</button>
+    </div>
+    <div class="section-title" style="margin-top:0">Todo el menú</div>
+    <div style="max-height:44vh; overflow-y:auto;">
+      ${more.map(r=>`<a class="side-link" style="color:var(--ink-800)" href="${r.hash}" onclick="closeSheet()"><span class="ic">${r.icon}</span>${r.label}</a>`).join('')}
+    </div>`;
+  bd.style.display='block'; sh.style.display='block';
+}
+function closeSheet(){ document.getElementById('sheet-backdrop').style.display='none'; document.getElementById('quick-sheet').style.display='none'; }
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('sheet-backdrop').addEventListener('click', closeSheet);
+});
+
+function quickStartSession(){
+  const cls = STATE.classes[0];
+  if(currentRoute().startsWith('#/clase/')){
+    openIniciarSesionModal(currentRoute().split('/')[2]);
+  } else {
+    navigate('#/clases');
+    toast('Elige una clase para iniciar sesión');
+  }
+}
+function toggleTheme(){
+  STATE.theme = STATE.theme==='dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', STATE.theme);
+  saveState(); render();
+}
+function openCicloModal(){
+  openModal(`
+    <div class="modal-head"><h3>Ciclo escolar</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <p class="small-muted" style="margin-bottom:12px;">Cambiar de ciclo separa por completo la información histórica de clases, calificaciones y asistencia.</p>
+      ${STATE.ciclosDisponibles.map(c=>`
+        <label class="check-row" style="cursor:pointer;">
+          <input type="radio" name="ciclo" value="${c}" ${c===STATE.escuela.ciclo?'checked':''} onchange="setCiclo('${c}')">
+          <span>${c} ${c===STATE.escuela.ciclo?' · <b>activo</b>':''}</span>
+        </label>`).join('')}
+    </div>
+  `);
+}
+function setCiclo(c){ STATE.escuela.ciclo=c; closeModal(); toast('Ciclo escolar activo: '+c); render(); }
+
+function openNotifPanel(){
+  STATE.notifications.forEach(n=>n.leido=true);
+  const items = STATE.notifications.slice(0,12);
+  openModal(`
+    <div class="modal-head"><h3>Notificaciones</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      ${items.length? items.map(n=>`
+        <div style="padding:10px 0; border-bottom:1px solid var(--line-soft);">
+          <div style="font-size:13px;">${escapeHtml(n.texto)}</div>
+          <div class="small-muted" style="margin-top:3px;">${fmtDate(n.fecha)} · ${fmtTime(n.fecha)}</div>
+        </div>`).join('') : `<div class="empty-state"><div class="ei">🔔</div><div class="et">Sin notificaciones</div><div class="ed">Aquí verás tareas, evaluaciones y avisos nuevos.</div></div>`}
+    </div>
+  `);
+  saveState(); renderTopbar();
+}
+
+function logout(){
+  STATE.session=false;
+  saveState();
+  document.getElementById('app-shell').classList.remove('active');
+  document.getElementById('auth-screen').style.display='flex';
+  renderAuth();
+}
+
+/* ============================================================
+   Autenticación (demo)
+   ============================================================ */
+function renderAuth(){
+  const el = document.getElementById('auth-screen');
+  el.innerHTML = `
+    <div class="auth-card">
+      <div class="brandmark">${LOGO_SVG}<span class="word">JAC <b>Educa</b></span></div>
+      <h1>Iniciar sesión</h1>
+      <p class="auth-sub">Centro de gestión, evaluación y seguimiento de la comunidad escolar.</p>
+      <div class="field"><label>Correo</label><input id="auth-email" type="email" value="jacf1390@gmail.com"></div>
+      <div class="field"><label>Contraseña</label><input id="auth-pass" type="password" value="••••••••"></div>
+      <button class="btn btn-primary btn-block" onclick="doLogin()">Iniciar sesión →</button>
+      <div class="auth-demo-note">Cuenta demo precargada de <b>${escapeHtml(STATE.docente.nombre)}</b><br>${escapeHtml(STATE.escuela.nombre)} · Ciclo ${STATE.escuela.ciclo}</div>
+    </div>`;
+}
+function doLogin(){
+  STATE.session = true;
+  saveState();
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('app-shell').classList.add('active');
+  if(!location.hash) location.hash = '#/inicio';
+  render();
+  toast('Bienvenido, '+STATE.docente.nombre.split(' ')[0]);
+}
+
+/* ============================================================
+   Helpers de negocio: promedios, ponderaciones, alertas
+   ============================================================ */
+function classActivities(classId){ return STATE.activities.filter(a=>a.classId===classId); }
+function gradeFor(activityId, studentId){
+  return STATE.grades.find(g=>g.activityId===activityId && g.studentId===studentId) || null;
+}
+function submissionFor(activityId, studentId){
+  return STATE.submissions.find(s=>s.activityId===activityId && s.studentId===studentId) || null;
+}
+function ensureGradeRow(activityId, studentId){
+  let g = gradeFor(activityId, studentId);
+  if(!g){ g = {id:uid('gr'), activityId, studentId, valor:null, comentario:'', actualizadoEn:null, historial:[]}; STATE.grades.push(g); }
+  return g;
+}
+function studentAverage(classId, studentId){
+  const acts = classActivities(classId).filter(a=>a.evaluable);
+  const vals = acts.map(a=>{
+    const g = gradeFor(a.id, studentId);
+    return g && g.valor!==null ? g.valor : null;
+  }).filter(v=>v!==null);
+  if(!vals.length) return null;
+  const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+  return roundGrade(avg);
+}
+function classAverage(classId){
+  const c = getClass(classId);
+  const vals = c.alumnos.map(a=>studentAverage(classId,a.id)).filter(v=>v!==null);
+  if(!vals.length) return null;
+  return roundGrade(vals.reduce((a,b)=>a+b,0)/vals.length);
+}
+function studentAttendanceRate(classId, studentId){
+  const sess = STATE.sessions.filter(s=>s.classId===classId && s.cerrada);
+  if(!sess.length) return null;
+  let present=0;
+  sess.forEach(s=>{
+    const scan = STATE.qrScans.find(sc=>sc.sessionId===s.id && sc.studentId===studentId);
+    if(scan && (scan.tipo==='presente'||scan.tipo==='retardo')) present++;
+  });
+  return Math.round((present/sess.length)*100);
+}
+function studentAlertLevel(classId, studentId){
+  const avg = studentAverage(classId, studentId);
+  const att = studentAttendanceRate(classId, studentId);
+  const openInc = STATE.incidents.filter(i=>i.studentId===studentId && i.estado!=='CERRADA').length;
+  const reasons = [];
+  let level = 'green';
+  if(avg!==null && avg < 6){ level='red'; reasons.push(`Promedio ${avg.toFixed(1)}`); }
+  else if(avg!==null && avg < 7){ if(level!=='red') level='yellow'; reasons.push(`Promedio ${avg.toFixed(1)}`); }
+  if(att!==null && att < 70){ level='red'; reasons.push(`Asistencia ${att}%`); }
+  else if(att!==null && att < 85){ if(level!=='red') level='yellow'; reasons.push(`Asistencia ${att}%`); }
+  if(openInc>0){ if(level!=='red') level='yellow'; reasons.push(`${openInc} incidencia(s) abierta(s)`); }
+  const pend = classActivities(classId).filter(a=>a.evaluable).filter(a=>{
+    const g = gradeFor(a.id, studentId);
+    return !g || g.valor===null;
+  }).length;
+  if(pend>=3){ level='red'; reasons.push(`${pend} actividades pendientes`); }
+  else if(pend>=1 && level==='green'){ level='yellow'; reasons.push(`${pend} actividad(es) pendiente(s)`); }
+  if(!reasons.length) reasons.push('Sin novedades');
+  return {level, reasons};
+}
+function weightSum(c){
+  const w=c.ponderaciones;
+  return Object.values(w).reduce((a,b)=>a+Number(b||0),0);
+}
+
+/* ============================================================
+   VISTA: Centro de mando (Inicio)
+   ============================================================ */
+function viewInicio(){
+  const today = new Date();
+  const dow = today.toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'});
+  const pendActs = STATE.activities.filter(a=>a.evaluable).reduce((n,a)=>{
+    const c = getClass(a.classId); if(!c) return n;
+    const pend = c.alumnos.filter(al=>{ const g=gradeFor(a.id, al.id); return !g||g.valor===null; }).length;
+    return n + (pend>0?1:0);
+  },0);
+  const evalCount = STATE.evaluations.length;
+  const avisos = STATE.announcements.length;
+  const proyCount = STATE.projects.filter(p=>p.estado!=='cerrado').length;
+  const totalAlumnos = STATE.classes.reduce((n,c)=>n+c.alumnos.length,0);
+  const activeSession = STATE.sessions.find(s=>!s.cerrada);
+
+  return `
+  <div class="view-head">
+    <h1>Tu centro de mando</h1>
+    <div class="sub" style="text-transform:capitalize">${dow}</div>
+  </div>
+
+  ${activeSession ? `
+  <div class="card" style="border-color:var(--turq-500); background:linear-gradient(90deg, var(--turq-100), var(--paper-0)); margin-bottom:18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+    <div style="font-size:24px;">📡</div>
+    <div style="flex:1; min-width:200px;">
+      <div style="font-weight:700; font-size:14.5px;">Sesión de clase activa · ${escapeHtml(classLabel(getClass(activeSession.classId)))}</div>
+      <div class="small-muted">QR inteligente en curso — ${activeSession.presentes||0} presentes de ${getClass(activeSession.classId).alumnos.length}</div>
+    </div>
+    <a class="btn btn-accent btn-sm" href="#/sesion/${activeSession.id}">Ir a la sesión →</a>
+  </div>` : `
+  <div class="card" style="margin-bottom:18px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+    <div style="width:44px; height:44px; border-radius:12px; background:var(--paper-100); display:flex; align-items:center; justify-content:center; font-size:20px;">🗓️</div>
+    <div style="flex:1; min-width:220px;">
+      <div style="font-weight:700; font-size:14.5px;">Sin clase activa ahora</div>
+      <div class="small-muted">Cuando inicies una sesión de clase, aquí verás sus acciones rápidas y el QR inteligente.</div>
+    </div>
+    <a class="btn btn-outline btn-sm" href="#/clases">Ver mis clases</a>
+  </div>`}
+
+  <div class="grid grid-4" style="margin-bottom:8px;">
+    <div class="stat-card"><div class="lbl">📚 Clases hoy</div><div class="num">${STATE.classes.length}</div></div>
+    <div class="stat-card"><div class="lbl">📋 Actividades por calificar</div><div class="num">${pendActs}</div></div>
+    <div class="stat-card"><div class="lbl">🧪 Evaluaciones</div><div class="num">${evalCount}</div></div>
+    <div class="stat-card"><div class="lbl">🧑‍🎓 Alumnos</div><div class="num">${totalAlumnos}</div></div>
+  </div>
+
+  <div class="section-title">Acciones rápidas</div>
+  <div class="grid grid-4">
+    ${quickTile('➕','Nueva clase','Agregar grupo o materia','turq', "toast('Las clases de este ciclo ya están precargadas para la demo')")}
+    ${quickTile('⚡','Iniciar sesión de clase','Generar QR inteligente','info', "navigate('#/clases')")}
+    ${quickTile('📋','Nueva actividad','Tarea, proyecto o práctica','warning', "navigate('#/actividades')")}
+    ${quickTile('🧪','Nueva evaluación','Constructor con banco de preguntas','turq', "navigate('#/evaluaciones')")}
+    ${quickTile('✅','Registrar asistencia','Manual o por QR','success', "navigate('#/asistencia')")}
+    ${quickTile('📂','Nuevo proyecto','Académico o institucional','info', "navigate('#/proyectos')")}
+    ${quickTile('📢','Nuevo aviso','Publicar al muro escolar','alert', "navigate('#/avisos')")}
+    ${quickTile('📈','Calificaciones','Libro y ponderaciones','turq', "navigate('#/calificaciones')")}
+  </div>
+
+  <div class="grid grid-2" style="margin-top:26px; align-items:start;">
+    <div>
+      <div class="section-title">Mis clases</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Clase</th><th>Promedio</th><th>Asistencia últ. sesión</th><th></th></tr></thead>
+          <tbody>
+            ${STATE.classes.map(c=>{
+              const avg = classAverage(c.id);
+              const last = [...STATE.sessions].filter(s=>s.classId===c.id).pop();
+              return `<tr>
+                <td><b>${classLabel(c)}</b><div class="small-muted">${c.alumnos.length} alumnos</div></td>
+                <td>${avg!==null? avg.toFixed(1) : '<span class="small-muted">sin datos</span>'}</td>
+                <td>${last ? `${last.presentes||0}/${c.alumnos.length}` : '<span class="small-muted">—</span>'}</td>
+                <td><a class="btn btn-ghost btn-sm" href="#/clase/${c.id}">Abrir →</a></td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">Comunidad</div>
+      <div class="card">
+        ${STATE.announcements.slice(0,2).map(a=>`
+          <div style="padding:8px 0; border-bottom:1px solid var(--line-soft);">
+            <div style="font-weight:600; font-size:13px;">${escapeHtml(a.autor)}</div>
+            <div class="small-muted">${escapeHtml(a.texto)}</div>
+          </div>`).join('')}
+        <a class="btn btn-outline btn-sm btn-block" style="margin-top:12px;" href="#/comunidad">Ir al muro →</a>
+      </div>
+    </div>
+  </div>
+  `;
+}
+function quickTile(icon,title,desc,color,onclick){
+  const map = {turq:['var(--turq-100)','var(--turq-600)'], info:['var(--info-bg)','var(--info)'], warning:['var(--warning-bg)','var(--warning)'], success:['var(--success-bg)','var(--success)'], alert:['var(--alert-bg)','var(--alert)']};
+  const [bg,fg] = map[color]||map.turq;
+  return `<button class="quick-tile" onclick="${onclick}">
+    <span class="qi" style="background:${bg}; color:${fg};">${icon}</span>
+    <span class="qt">${title}</span>
+    <span class="qd">${desc}</span>
+  </button>`;
+}
+
+/* ============================================================
+   VISTA: Mi escuela
+   ============================================================ */
+function viewEscuela(){
+  const e = STATE.escuela;
+  const fields = [
+    ['Nombre','nombre'], ['CCT','cct'], ['Nivel','nivel'], ['Turno','turno'],
+    ['Localidad','localidad'], ['Municipio','municipio'], ['Estado','estado'],
+    ['Zona escolar','zona'], ['Sector','sector'], ['Director(a)','director'],
+  ];
+  return `
+  <div class="view-head"><h1>Mi escuela</h1><div class="sub">Datos capturados una vez y reutilizados en toda la aplicación.</div></div>
+  <div class="card">
+    <div class="grid grid-2">
+      ${fields.map(([lbl,key])=>`
+        <div class="field" style="margin-bottom:6px;">
+          <label>${lbl}</label>
+          <input value="${escapeHtml(e[key])}" onchange="updateSchoolField('${key}', this.value)">
+        </div>`).join('')}
+    </div>
+  </div>
+  <div class="section-title">Ciclo escolar</div>
+  <div class="card flexrow" style="flex-wrap:wrap; gap:10px;">
+    ${STATE.ciclosDisponibles.map(c=>`<button class="pill-tab ${c===e.ciclo?'active':''}" onclick="setCiclo('${c}')">${c}</button>`).join('')}
+  </div>
+  <div class="section-title">Escuelas</div>
+  <div class="card" style="display:flex; align-items:center; gap:12px;">
+    <div style="font-size:20px;">🏫</div>
+    <div style="flex:1;"><b>Trabajas en 3 escuelas.</b> <span class="small-muted">La arquitectura de JAC Educa aísla alumnos, grupos, clases y reportes por escuela y por ciclo. Esta demo muestra ${escapeHtml(e.nombre)}.</span></div>
+  </div>
+  `;
+}
+function updateSchoolField(key, val){ STATE.escuela[key]=val; saveState(); toast('Guardado'); renderSidebar(); }
+
+/* ============================================================
+   VISTA: Mis clases
+   ============================================================ */
+function viewClases(){
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Mis clases</h1><div class="sub">${STATE.classes.length} clases asignadas · ciclo ${STATE.escuela.ciclo}</div></div>
+    <div class="view-actions">
+      <button class="btn btn-outline btn-sm" onclick="toast('Las clases de este ciclo ya están precargadas para la demo')">👥 Nuevo grupo</button>
+      <button class="btn btn-primary btn-sm" onclick="toast('Las clases de este ciclo ya están precargadas para la demo')">+ Nueva clase</button>
+    </div>
+  </div>
+  <div class="grid grid-3">
+    ${STATE.classes.map(c=>{
+      const avg = classAverage(c.id);
+      const pendAct = classActivities(c.id).filter(a=>a.evaluable).length;
+      return `<a class="card" style="text-decoration:none; display:block; color:inherit;" href="#/clase/${c.id}">
+        <div class="flexrow" style="margin-bottom:10px;">
+          <span class="tag tag-info">${c.grado}${c.grupo}</span>
+          <span class="spacer"></span>
+          <span class="small-muted">${c.horario}</span>
+        </div>
+        <div style="font-weight:700; font-size:15px; margin-bottom:4px;">${c.materia}</div>
+        <div class="small-muted" style="margin-bottom:14px;">${c.alumnos.length} alumnos</div>
+        <div class="flexrow" style="gap:14px;">
+          <div><div class="small-muted">Promedio</div><div style="font-weight:700;">${avg!==null?avg.toFixed(1):'—'}</div></div>
+          <div><div class="small-muted">Actividades</div><div style="font-weight:700;">${pendAct}</div></div>
+        </div>
+      </a>`;
+    }).join('')}
+  </div>
+  `;
+}
+
+/* ============================================================
+   VISTA: Hub de una clase
+   ============================================================ */
+function viewClaseHub(classId){
+  const c = getClass(classId);
+  if(!c) return `<div class="empty-state"><div class="ei">🔍</div><div class="et">Clase no encontrada</div></div>`;
+  const avg = classAverage(c.id);
+  const acts = classActivities(c.id);
+  const pendCount = acts.filter(a=>a.evaluable).filter(a=> c.alumnos.some(al=>{const g=gradeFor(a.id,al.id); return !g||g.valor===null;})).length;
+  const lastSession = [...STATE.sessions].filter(s=>s.classId===c.id).pop();
+  const actions = [
+    ['⚡','Iniciar sesión de clase', ()=>`openIniciarSesionModal('${c.id}')`],
+    ['✅','Asistencia', ()=>`navigate('#/asistencia?clase=${c.id}')`],
+    ['✏️','Evaluar', ()=>`navigate('#/actividades?clase=${c.id}')`],
+    ['📋','Actividades', ()=>`navigate('#/actividades?clase=${c.id}')`],
+    ['📓','Bitácora', ()=>`navigate('#/bitacora?clase=${c.id}')`],
+    ['📈','Calificaciones', ()=>`navigate('#/calificaciones?clase=${c.id}')`],
+    ['📊','Analítica', ()=>`navigate('#/analitica?clase=${c.id}')`],
+    ['📄','Reportes', ()=>`navigate('#/reportes?clase=${c.id}')`],
+    ['⚙️','Configuración', ()=>`openClassConfigModal('${c.id}')`],
+  ];
+  return `
+  <div class="view-head view-head-row">
+    <div>
+      <div class="small-muted"><a href="#/clases">Mis clases</a> / ${classLabel(c)}</div>
+      <h1 style="margin-top:4px;">${classLabel(c)}</h1>
+      <div class="sub">${c.alumnos.length} alumnos · ${c.horario} · ciclo ${c.ciclo}</div>
+    </div>
+    <div class="view-actions">
+      <button class="btn btn-accent" onclick="openIniciarSesionModal('${c.id}')">⚡ Iniciar sesión de clase</button>
+    </div>
+  </div>
+
+  ${lastSession && !lastSession.cerrada ? `
+  <div class="card" style="border-color:var(--turq-500); background:var(--turq-100); margin-bottom:16px;">
+    <div class="flexrow"><div><b>Hay una sesión abierta</b> generada hoy.</div><span class="spacer"></span><a class="btn btn-accent btn-sm" href="#/sesion/${lastSession.id}">Continuar →</a></div>
+  </div>`:''}
+
+  <div class="grid grid-4" style="margin-bottom:6px;">
+    <div class="stat-card"><div class="lbl">Promedio general</div><div class="num">${avg!==null?avg.toFixed(1):'—'}<small>/10</small></div></div>
+    <div class="stat-card"><div class="lbl">Actividades pendientes</div><div class="num">${pendCount}</div></div>
+    <div class="stat-card"><div class="lbl">Última sesión</div><div class="num" style="font-size:16px;">${lastSession? fmtDate(lastSession.fecha):'—'}</div></div>
+    <div class="stat-card"><div class="lbl">Ponderación</div><div class="num" style="font-size:16px; color:${weightSum(c)===100?'var(--success)':'var(--alert)'}">${weightSum(c)}%</div></div>
+  </div>
+
+  <div class="section-title">Acciones</div>
+  <div class="grid grid-4">
+    ${actions.map(([ic,lbl,fn])=>`<button class="quick-tile" onclick="${fn()}"><span class="qi" style="background:var(--paper-100); color:var(--ink-700)">${ic}</span><span class="qt">${lbl}</span></button>`).join('')}
+  </div>
+
+  <div class="section-title">Alumnos <span class="n">(${c.alumnos.length})</span></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Alumno</th><th>Matrícula</th><th>Promedio</th><th>Asistencia</th><th>Seguimiento</th></tr></thead>
+      <tbody>
+        ${c.alumnos.map(a=>{
+          const sAvg = studentAverage(c.id,a.id);
+          const att = studentAttendanceRate(c.id,a.id);
+          const alert = studentAlertLevel(c.id, a.id);
+          const dot = {green:'🟢',yellow:'🟡',red:'🔴'}[alert.level];
+          return `<tr>
+            <td><div class="flexrow"><span class="avatar-sm">${initials(a.nombre)}</span>${escapeHtml(a.nombre)}</div></td>
+            <td class="mono small-muted">${a.matricula}</td>
+            <td>${sAvg!==null?sAvg.toFixed(1):'<span class="small-muted">sin calificar</span>'}</td>
+            <td>${att!==null?att+'%':'<span class="small-muted">—</span>'}</td>
+            <td>${dot} <span class="small-muted">${alert.reasons[0]}</span></td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>
+  `;
+}
+function initials(name){ const p=name.split(' '); return ((p[0]?.[0]||'')+(p[1]?.[0]||'')).toUpperCase(); }
+
+function openClassConfigModal(classId){
+  const c = getClass(classId);
+  openModal(`
+    <div class="modal-head"><h3>Configuración · ${classLabel(c)}</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="section-title" style="margin-top:0;">Ponderaciones</div>
+      ${Object.entries(c.ponderaciones).map(([k,v])=>`
+        <div class="field" style="display:flex; align-items:center; gap:10px;">
+          <label style="flex:1; margin:0; text-transform:capitalize;">${k}</label>
+          <input type="number" min="0" max="100" style="width:80px;" value="${v}" onchange="updateWeight('${classId}','${k}', this.value)">
+        </div>`).join('')}
+      <div class="small-muted" style="margin-top:8px;">Total: <b style="color:${weightSum(c)===100?'var(--success)':'var(--alert)'}">${weightSum(c)}%</b> ${weightSum(c)===100?'✓ válido':'debe sumar 100%'}</div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-primary" onclick="closeModal()">Listo</button></div>
+  `);
+}
+function updateWeight(classId,key,val){
+  const c = getClass(classId); c.ponderaciones[key]=Number(val)||0; saveState();
+  openClassConfigModal(classId);
+}
+
+/* ============================================================
+   Iniciar sesión de clase (paso previo al QR)
+   ============================================================ */
+function openIniciarSesionModal(classId){
+  const c = getClass(classId);
+  const now = new Date();
+  openModal(`
+    <div class="modal-head"><h3>Iniciar sesión de clase</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="grid grid-2" style="margin-bottom:6px;">
+        <div><div class="small-muted">Grupo</div><div style="font-weight:600;">${c.grado}${c.grupo} · ${c.materia}</div></div>
+        <div><div class="small-muted">Fecha</div><div style="font-weight:600;">${now.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})}</div></div>
+        <div><div class="small-muted">Hora</div><div style="font-weight:600;">${fmtTime(now.toISOString())}</div></div>
+        <div><div class="small-muted">Duración</div><div style="font-weight:600;">50 minutos</div></div>
+      </div>
+      <div class="divider"></div>
+      <div class="small-muted" style="margin-bottom:6px; font-weight:600;">Elementos activos en esta sesión</div>
+      <label class="check-row"><input type="checkbox" id="opt-asistencia" checked> Registrar asistencia</label>
+      <label class="check-row"><input type="checkbox" id="opt-actividad" checked> Aplicar actividad</label>
+      <label class="check-row"><input type="checkbox" id="opt-evaluacion"> Evaluar actividad</label>
+      <label class="check-row"><input type="checkbox" id="opt-bitacora" checked> Registrar bitácora</label>
+      <label class="check-row"><input type="checkbox" id="opt-evidencia"> Permitir entrega de evidencia</label>
+      <div class="divider"></div>
+      <div class="small-muted" style="margin-bottom:6px; font-weight:600;">Modo del QR inteligente</div>
+      <select id="opt-modo" class="field" style="width:100%; padding:9px 10px; border:1px solid var(--line); border-radius:8px; background:var(--paper-50);">
+        <option value="1">Modo 1 · Solo asistencia</option>
+        <option value="2" selected>Modo 2 · Asistencia + actividad</option>
+        <option value="3">Modo 3 · Asistencia + evaluación</option>
+        <option value="4">Modo 4 · Asistencia + actividad + evaluación</option>
+        <option value="5">Modo 5 · Acceso general a la sesión</option>
+      </select>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-accent" onclick="startSession('${classId}')">Generar QR →</button>
+    </div>
+  `);
+}
+function startSession(classId){
+  const c = getClass(classId);
+  const opts = {
+    asistencia: document.getElementById('opt-asistencia').checked,
+    actividad: document.getElementById('opt-actividad').checked,
+    evaluacion: document.getElementById('opt-evaluacion').checked,
+    bitacora: document.getElementById('opt-bitacora').checked,
+    evidencia: document.getElementById('opt-evidencia').checked,
+    modo: document.getElementById('opt-modo').value,
+  };
+  const now = new Date();
+  const sessionId = uid('ses');
+  let activityId = null;
+  if(opts.actividad){
+    activityId = uid('act');
+    STATE.activities.push({
+      id:activityId, classId, titulo:'Componentes del espacio geográfico', tipo:'actividad de clase',
+      evaluable:true, fecha:now.toISOString(), estado:'activa', sessionId
+    });
+  }
+  const session = {
+    id:sessionId, classId, fecha:now.toISOString(), horaInicio:now.toISOString(),
+    duracionMin:50, opciones:opts, activityId,
+    qrToken: sessionId+'-'+Math.random().toString(36).slice(2,8),
+    presentes:0, retardos:0, cerrada:false, tolerancia:10,
+  };
+  STATE.sessions.push(session);
+  STATE.activeSessionId = sessionId;
+  closeModal();
+  navigate('#/sesion/'+sessionId);
+  toast('Sesión iniciada. QR inteligente generado.', 'success');
+}
+
+/* ============================================================
+   VISTA: Sesión de clase — QR inteligente
+   ============================================================ */
+function viewSesion(sessionId){
+  const s = STATE.sessions.find(x=>x.id===sessionId);
+  if(!s) return `<div class="empty-state"><div class="ei">🔍</div><div class="et">Sesión no encontrada</div></div>`;
+  const c = getClass(s.classId);
+  const total = c.alumnos.length;
+  const scans = STATE.qrScans.filter(sc=>sc.sessionId===s.id);
+  const presentIds = new Set(scans.map(sc=>sc.studentId));
+  const pendientes = c.alumnos.filter(a=>!presentIds.has(a.id));
+  const activity = s.activityId ? STATE.activities.find(a=>a.id===s.activityId) : null;
+  const entregas = activity ? STATE.submissions.filter(sub=>sub.activityId===activity.id) : [];
+
+  return `
+  <div class="view-head view-head-row">
+    <div>
+      <div class="small-muted"><a href="#/clase/${c.id}">${classLabel(c)}</a> / Sesión de clase</div>
+      <h1 style="margin-top:4px;">Sesión de clase ${s.cerrada?'· <span style="color:var(--gray-400); font-size:16px;">cerrada</span>':''}</h1>
+      <div class="sub">${fmtDate(s.fecha)} · ${fmtTime(s.fecha)} · ${classLabel(c)} · ${s.duracionMin} min</div>
+    </div>
+    <div class="view-actions">
+      ${!s.cerrada ? `<button class="btn btn-danger btn-sm" onclick="stopSession('${s.id}')">■ Detener sesión</button>` : `<span class="tag tag-gray">QR invalidado</span>`}
+    </div>
+  </div>
+
+  <div class="grid grid-2" style="align-items:start;">
+    <div class="card" style="text-align:center;">
+      <div class="small-muted" style="margin-bottom:10px; font-weight:600;">QR INTELIGENTE DE SESIÓN</div>
+      <div id="qr-holder" style="display:flex; justify-content:center; padding:14px; background:#fff; border-radius:12px; border:1px solid var(--line); ${s.cerrada?'opacity:.3;':''}"></div>
+      <div class="mono small-muted" style="margin-top:10px;">Token: ${s.qrToken}</div>
+      <div style="margin-top:14px;">
+        <span class="tag ${s.cerrada?'tag-gray':'tag-success'}">${s.cerrada?'QR detenido':'QR activo'}</span>
+        <span class="tag tag-info">Modo ${s.opciones.modo}</span>
+      </div>
+      ${!s.cerrada?`
+      <div class="flexrow" style="margin-top:16px; justify-content:center; gap:8px; flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" onclick="renewQr('${s.id}')">🔄 Renovar QR</button>
+        <button class="btn btn-outline btn-sm" onclick="toast('Escaneos: '+${scans.length})">👁 Ver escaneos</button>
+      </div>
+      <div class="divider"></div>
+      <div class="small-muted" style="margin-bottom:8px;">Simulador de escaneo (demo — sustituye la cámara del alumno)</div>
+      <button class="btn btn-accent btn-block" ${pendientes.length===0?'disabled':''} onclick="simulateScan('${s.id}')">📷 Simular escaneo de alumno</button>
+      <button class="btn btn-ghost btn-sm btn-block" style="margin-top:6px;" onclick="attemptDuplicate('${s.id}')">Probar escaneo duplicado</button>
+      `:''}
+    </div>
+
+    <div>
+      <div class="grid grid-2" style="margin-bottom:12px;">
+        <div class="stat-card"><div class="lbl">✅ Presentes</div><div class="num">${s.presentes||0}<small>/${total}</small></div></div>
+        <div class="stat-card"><div class="lbl">⏳ Pendientes</div><div class="num">${pendientes.length}</div></div>
+      </div>
+      <div class="progress-track" style="margin-bottom:16px;"><div class="progress-fill" style="width:${total?((s.presentes||0)/total*100):0}%"></div></div>
+
+      ${activity?`
+      <div class="card" style="margin-bottom:14px;">
+        <div class="flexrow"><b>${escapeHtml(activity.titulo)}</b><span class="spacer"></span><span class="tag tag-info">${entregas.length} entregas</span></div>
+        <div class="small-muted" style="margin-top:4px;">Se abre automáticamente al registrar asistencia del alumno.</div>
+      </div>`:''}
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Alumno</th><th>Estado</th><th>Hora</th><th></th></tr></thead>
+          <tbody>
+            ${c.alumnos.map(a=>{
+              const scan = scans.find(sc=>sc.studentId===a.id);
+              const sub = activity ? submissionFor(activity.id, a.id) : null;
+              let estado = scan ? (scan.tipo==='retardo'?'<span class="tag tag-warning">Retardo</span>':'<span class="tag tag-success">Presente</span>') : '<span class="tag tag-gray">Pendiente</span>';
+              if(sub) estado += ' <span class="tag tag-info">Entregado</span>';
+              return `<tr>
+                <td>${escapeHtml(a.nombre)}</td>
+                <td>${estado}</td>
+                <td class="small-muted">${scan? fmtTime(scan.hora):'—'}</td>
+                <td>${!scan && !s.cerrada ? `<button class="btn btn-ghost btn-sm" onclick="manualMark('${s.id}','${a.id}')">Marcar manual</button>`:''}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function hookSesion(sessionId){
+  const s = STATE.sessions.find(x=>x.id===sessionId);
+  if(!s) return;
+  const holder = document.getElementById('qr-holder');
+  if(holder && window.QRCode){
+    holder.innerHTML='';
+    try{
+      new QRCode(holder, {text: 'JACEDUCA::'+s.qrToken, width:170, height:170, colorDark:'#0B1E33', colorLight:'#ffffff'});
+    }catch(e){ holder.innerHTML = '<div class="mono" style="font-size:11px;">'+s.qrToken+'</div>'; }
+  }
+}
+
+function sessionTimingStatus(s){
+  const start = new Date(s.horaInicio).getTime();
+  const now = Date.now();
+  const minsIn = (now-start)/60000;
+  return minsIn > s.tolerancia ? 'retardo' : 'presente';
+}
+
+function registerAttendance(sessionId, studentId, viaManual){
+  const s = STATE.sessions.find(x=>x.id===sessionId);
+  const already = STATE.qrScans.find(sc=>sc.sessionId===sessionId && sc.studentId===studentId);
+  if(already){ toast('Tu asistencia ya está registrada.', 'alert'); return already; }
+  const tipo = viaManual ? 'presente' : sessionTimingStatus(s);
+  const scan = {sessionId, studentId, hora:new Date().toISOString(), tipo};
+  STATE.qrScans.push(scan);
+  s.presentes = (s.presentes||0) + 1;
+  if(tipo==='retardo') s.retardos = (s.retardos||0)+1;
+  // Abrir actividad asignada automáticamente y registrar entrega (simulado)
+  if(s.activityId && s.opciones.actividad){
+    const exists = submissionFor(s.activityId, studentId);
+    if(!exists){
+      STATE.submissions.push({id:uid('sub'), activityId:s.activityId, studentId, estado:'Entregada', entregaFecha:new Date().toISOString()});
+      ensureGradeRow(s.activityId, studentId);
+    }
+  }
+  return scan;
+}
+function simulateScan(sessionId){
+  const s = STATE.sessions.find(x=>x.id===sessionId);
+  const c = getClass(s.classId);
+  const presentIds = new Set(STATE.qrScans.filter(sc=>sc.sessionId===sessionId).map(sc=>sc.studentId));
+  const next = c.alumnos.find(a=>!presentIds.has(a.id));
+  if(!next){ toast('Todo el grupo ya está presente'); return; }
+  registerAttendance(sessionId, next.id, false);
+  saveState();
+  toast(`${next.nombre.split(' ')[0]} escaneó su QR · asistencia y actividad registradas`, 'success');
+  render();
+}
+function attemptDuplicate(sessionId){
+  const scans = STATE.qrScans.filter(sc=>sc.sessionId===sessionId);
+  if(!scans.length){ toast('Aún no hay ningún alumno registrado para probar esto'); return; }
+  registerAttendance(sessionId, scans[0].studentId, false);
+}
+function manualMark(sessionId, studentId){
+  registerAttendance(sessionId, studentId, true);
+  saveState(); toast('Asistencia marcada manualmente', 'success'); render();
+}
+function renewQr(sessionId){
+  const s = STATE.sessions.find(x=>x.id===sessionId);
+  s.qrToken = sessionId+'-'+Math.random().toString(36).slice(2,8);
+  saveState(); toast('QR renovado'); render();
+}
+function stopSession(sessionId){
+  const s = STATE.sessions.find(x=>x.id===sessionId);
+  const c = getClass(s.classId);
+  s.cerrada = true;
+  s.horaFin = new Date().toISOString();
+  // Bitácora automática
+  if(s.opciones.bitacora){
+    STATE.bitacora.unshift({
+      id:uid('bit'), classId:s.classId, sessionId:s.id, fecha:s.fecha,
+      tema: s.activityId ? STATE.activities.find(a=>a.id===s.activityId)?.titulo : 'Sesión de clase',
+      actividad: s.activityId ? 'Sí — '+ (STATE.activities.find(a=>a.id===s.activityId)?.titulo||'') : 'No aplicó',
+      asistenciaResumen: `${s.presentes||0}/${c.alumnos.length} presentes, ${s.retardos||0} retardo(s)`,
+      observaciones:'', incidencias:'Ninguna registrada', acuerdos:'', pendientes: (c.alumnos.length-(s.presentes||0))+' alumno(s) sin registrar asistencia',
+      auto:true,
+    });
+  }
+  notify(`Sesión de ${classLabel(c)} cerrada · ${s.presentes||0}/${c.alumnos.length} presentes`, 'success');
+  STATE.activeSessionId = null;
+  saveState();
+  toast('Sesión cerrada. Asistencia, bitácora y analítica actualizadas.', 'success');
+  render();
+}
+
+/* ============================================================
+   VISTA: Asistencia (histórico)
+   ============================================================ */
+function viewAsistencia(){
+  const filterClase = routeParam('clase');
+  const classes = filterClase ? [getClass(filterClase)] : STATE.classes;
+  return `
+  <div class="view-head"><h1>Asistencia</h1><div class="sub">Historial de sesiones y registro por QR inteligente o manual.</div></div>
+  ${classPicker('#/asistencia', filterClase)}
+  ${classes.map(c=>{
+    const sessions = STATE.sessions.filter(s=>s.classId===c.id);
+    if(!sessions.length) return `<div class="card" style="margin-bottom:14px;"><b>${classLabel(c)}</b><div class="empty-state" style="padding:20px 0;"><div class="ed">Sin sesiones registradas todavía.</div></div></div>`;
+    return `<div class="section-title">${classLabel(c)}</div>
+    <div class="table-wrap" style="margin-bottom:18px;">
+      <table>
+        <thead><tr><th>Fecha</th><th>Presentes</th><th>Retardos</th><th>Ausentes</th><th>% Asistencia</th><th></th></tr></thead>
+        <tbody>
+          ${sessions.map(s=>{
+            const total=c.alumnos.length, pres=s.presentes||0, ret=s.retardos||0, aus=total-pres;
+            return `<tr>
+              <td>${fmtDate(s.fecha)} <span class="small-muted">${fmtTime(s.fecha)}</span></td>
+              <td>${pres}</td><td>${ret}</td><td>${aus}</td>
+              <td>${total? Math.round(pres/total*100):0}%</td>
+              <td><a class="btn btn-ghost btn-sm" href="#/sesion/${s.id}">Ver →</a></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  }).join('')}
+  `;
+}
+function classPicker(base, active){
+  return `<div class="pill-tabs">
+    <a class="pill-tab ${!active?'active':''}" href="${base}">Todas las clases</a>
+    ${STATE.classes.map(c=>`<a class="pill-tab ${active===c.id?'active':''}" href="${base}?clase=${c.id}">${c.grado}${c.grupo}</a>`).join('')}
+  </div>`;
+}
+
+/* ============================================================
+   VISTA: Tareas (no evaluables / seguimiento simple)
+   ============================================================ */
+function viewTareas(){
+  const tareas = STATE.activities.filter(a=>!a.evaluable);
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Tareas</h1><div class="sub">Pendientes simples, sin ponderación en calificaciones.</div></div>
+    <div class="view-actions"><button class="btn btn-primary btn-sm" onclick="openNewTaskModal()">+ Nueva tarea</button></div>
+  </div>
+  ${tareas.length? `<div class="table-wrap"><table>
+    <thead><tr><th>Tarea</th><th>Clase</th><th>Fecha</th><th>Estado</th></tr></thead>
+    <tbody>${tareas.map(t=>{
+      const c=getClass(t.classId);
+      return `<tr><td>${escapeHtml(t.titulo)}</td><td>${classLabel(c)}</td><td>${fmtDate(t.fecha)}</td>
+      <td><label class="flexrow" style="cursor:pointer;"><input type="checkbox" ${t.estado==='completada'?'checked':''} onchange="toggleTask('${t.id}')"> ${t.estado==='completada'?'Completada':'Pendiente'}</label></td></tr>`;
+    }).join('')}</tbody>
+  </table></div>` : emptyState('📝','No tienes tareas','Crea una tarea simple para tus grupos.', "openNewTaskModal()", 'Crear tarea')}
+  `;
+}
+function emptyState(icon,title,desc,onclick,btnLabel){
+  return `<div class="empty-state"><div class="ei">${icon}</div><div class="et">${title}</div><div class="ed">${desc}</div>${onclick?`<button class="btn btn-primary btn-sm" onclick="${onclick}">${btnLabel}</button>`:''}</div>`;
+}
+function openNewTaskModal(){
+  openModal(`
+    <div class="modal-head"><h3>Nueva tarea</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Título</label><input id="tk-titulo" placeholder="Ej. Leer capítulo 3"></div>
+      <div class="field"><label>Clase</label><select id="tk-clase">${STATE.classes.map(c=>`<option value="${c.id}">${classLabel(c)}</option>`).join('')}</select></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="createTask()">Crear</button></div>
+  `);
+}
+function createTask(){
+  const titulo = document.getElementById('tk-titulo').value.trim() || 'Nueva tarea';
+  const classId = document.getElementById('tk-clase').value;
+  STATE.activities.push({id:uid('tsk'), classId, titulo, tipo:'tarea', evaluable:false, fecha:new Date().toISOString(), estado:'pendiente'});
+  saveState(); closeModal(); toast('Tarea creada'); render();
+}
+function toggleTask(id){
+  const t = STATE.activities.find(a=>a.id===id);
+  t.estado = t.estado==='completada'?'pendiente':'completada';
+  saveState(); render();
+}
+
+/* ============================================================
+   VISTA: Actividades (con calificación rápida / masiva)
+   ============================================================ */
+function viewActividades(){
+  const filterClase = routeParam('clase');
+  const acts = STATE.activities.filter(a=>a.evaluable && (!filterClase || a.classId===filterClase));
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Actividades</h1><div class="sub">Escala nativa 0–10 · distingue "sin calificar" de 0.</div></div>
+    <div class="view-actions"><button class="btn btn-primary btn-sm" onclick="openNewActivityModal('${filterClase||''}')">+ Nueva actividad</button></div>
+  </div>
+  ${classPicker('#/actividades', filterClase)}
+  ${acts.length? acts.map(a=>{
+    const c = getClass(a.classId);
+    const entregadas = STATE.submissions.filter(s=>s.activityId===a.id).length;
+    const calificadas = STATE.grades.filter(g=>g.activityId===a.id && g.valor!==null).length;
+    return `<div class="card" style="margin-bottom:12px;">
+      <div class="flexrow" style="flex-wrap:wrap; gap:10px;">
+        <div style="flex:1; min-width:220px;">
+          <div style="font-weight:700;">${escapeHtml(a.titulo)}</div>
+          <div class="small-muted">${classLabel(c)} · ${a.tipo} · ${fmtDate(a.fecha)}</div>
+        </div>
+        <span class="tag tag-info">${entregadas} entregadas</span>
+        <span class="tag ${calificadas===c.alumnos.length?'tag-success':'tag-warning'}">${calificadas}/${c.alumnos.length} calificadas</span>
+        <button class="btn btn-accent btn-sm" onclick="openGradeActivityModal('${a.id}')">Calificar →</button>
+      </div>
+    </div>`;
+  }).join('') : emptyState('📋','No tienes actividades', filterClase?'Crea una actividad evaluable para esta clase.':'Crea una actividad evaluable para alguno de tus grupos.', `openNewActivityModal('${filterClase||''}')`, 'Crear actividad')}
+  `;
+}
+function openNewActivityModal(classId){
+  openModal(`
+    <div class="modal-head"><h3>Nueva actividad</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Título</label><input id="ac-titulo" placeholder="Ej. Mapa de husos horarios"></div>
+      <div class="field"><label>Clase</label><select id="ac-clase">${STATE.classes.map(c=>`<option value="${c.id}" ${classId===c.id?'selected':''}>${classLabel(c)}</option>`).join('')}</select></div>
+      <div class="field"><label>Tipo</label>
+        <select id="ac-tipo">
+          ${['actividad de clase','individual','grupal','investigación','práctica','proyecto','participación','cuestionario','evidencia'].map(t=>`<option>${t}</option>`).join('')}
+        </select>
+      </div>
+      <label class="check-row"><input type="checkbox" id="ac-evaluable" checked> Actividad evaluable (0–10)</label>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="createActivity()">Crear</button></div>
+  `);
+}
+function createActivity(){
+  const titulo = document.getElementById('ac-titulo').value.trim() || 'Nueva actividad';
+  const classId = document.getElementById('ac-clase').value;
+  const tipo = document.getElementById('ac-tipo').value;
+  const evaluable = document.getElementById('ac-evaluable').checked;
+  STATE.activities.push({id:uid('act'), classId, titulo, tipo, evaluable, fecha:new Date().toISOString(), estado:'activa'});
+  saveState(); closeModal(); toast('Actividad creada'); render();
+}
+
+function openGradeActivityModal(activityId){
+  const a = STATE.activities.find(x=>x.id===activityId);
+  const c = getClass(a.classId);
+  openModal(`
+    <div class="modal-head"><h3>${escapeHtml(a.titulo)}</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="flexrow" style="margin-bottom:10px; gap:8px;">
+        <input type="number" min="0" max="10" step="0.1" id="mass-grade" placeholder="Todos =" style="width:90px; padding:7px 9px; border:1px solid var(--line); border-radius:7px;">
+        <button class="btn btn-outline btn-sm" onclick="applyMassGrade('${activityId}')">Aplicar a todos</button>
+        <span class="spacer"></span>
+        <span class="small-muted">Política si no entregó: ${politicaLabel()}</span>
+      </div>
+      <div class="table-wrap" style="max-height:360px; overflow-y:auto;">
+        <table>
+          <thead><tr><th>Alumno</th><th>Estado</th><th>Calificación</th><th>Comentario</th></tr></thead>
+          <tbody>
+            ${c.alumnos.map(al=>{
+              const sub = submissionFor(activityId, al.id);
+              const g = ensureGradeRow(activityId, al.id);
+              const estado = sub ? sub.estado : (STATE.politicaNoEntregado==='cero' ? 'No entregada (0)' : STATE.politicaNoEntregado==='pendiente' ? 'Pendiente' : 'No entregada');
+              const val = g.valor;
+              return `<tr>
+                <td>${escapeHtml(al.nombre)}</td>
+                <td><span class="tag ${sub?'tag-info':'tag-gray'}">${estado}</span></td>
+                <td><input class="grade-input ${val===null?'empty':''}" type="number" min="0" max="10" step="0.1"
+                  value="${val===null?'':val}" placeholder="Sin calif." data-act="${activityId}" data-al="${al.id}"
+                  onchange="setGrade(this)"></td>
+                <td><input style="width:100%; padding:6px 8px; border:1px solid var(--line); border-radius:7px; font-size:12.5px;"
+                  value="${escapeHtml(g.comentario||'')}" placeholder="Comentario" data-act="${activityId}" data-al="${al.id}" onchange="setComment(this)"></td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-primary" onclick="closeModal(); render();">Guardar y cerrar</button></div>
+  `);
+}
+function politicaLabel(){
+  return {sin_calificar:'queda sin calificar', cero:'se califica automáticamente 0', pendiente:'queda como pendiente'}[STATE.politicaNoEntregado];
+}
+function setGrade(input){
+  const activityId = input.dataset.act, studentId = input.dataset.al;
+  const g = ensureGradeRow(activityId, studentId);
+  const raw = input.value;
+  let v = raw===''? null : clampGrade(roundGrade(raw));
+  if(raw!=='' && (parseFloat(raw)<0 || parseFloat(raw)>10)){
+    toast('La calificación debe estar entre 0 y 10', 'alert'); v = clampGrade(roundGrade(raw));
+  }
+  if(g.valor !== v){
+    g.historial.push({anterior:g.valor, nuevo:v, usuario:STATE.docente.nombre, fecha:new Date().toISOString()});
+  }
+  g.valor = v; g.actualizadoEn = new Date().toISOString();
+  input.value = v===null?'':v;
+  input.classList.toggle('empty', v===null);
+  saveState();
+}
+function setComment(input){
+  const g = ensureGradeRow(input.dataset.act, input.dataset.al);
+  g.comentario = input.value; saveState();
+}
+function applyMassGrade(activityId){
+  const v = clampGrade(roundGrade(document.getElementById('mass-grade').value));
+  if(v===null){ toast('Escribe una calificación válida'); return; }
+  const c = getClass(STATE.activities.find(a=>a.id===activityId).classId);
+  c.alumnos.forEach(al=>{
+    const g = ensureGradeRow(activityId, al.id);
+    g.historial.push({anterior:g.valor, nuevo:v, usuario:STATE.docente.nombre, fecha:new Date().toISOString()});
+    g.valor = v; g.actualizadoEn = new Date().toISOString();
+  });
+  saveState();
+  openGradeActivityModal(activityId);
+  toast('Calificación masiva aplicada — puedes modificar individualmente');
+}
+
+/* ============================================================
+   VISTA: Bitácora
+   ============================================================ */
+function viewBitacora(){
+  const filterClase = routeParam('clase');
+  const items = STATE.bitacora.filter(b=>!filterClase || b.classId===filterClase);
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Bitácora</h1><div class="sub">Se genera automáticamente al cerrar cada sesión de clase; también puedes editarla.</div></div>
+    <div class="view-actions"><button class="btn btn-primary btn-sm" onclick="openNewBitacoraModal('${filterClase||''}')">+ Entrada manual</button></div>
+  </div>
+  ${classPicker('#/bitacora', filterClase)}
+  ${items.length? items.map(b=>{
+    const c = getClass(b.classId);
+    return `<div class="card" style="margin-bottom:12px;">
+      <div class="flexrow" style="margin-bottom:6px;">
+        <b>${classLabel(c)}</b><span class="spacer"></span>
+        <span class="small-muted">${fmtDate(b.fecha)}</span>
+        ${b.auto?'<span class="tag tag-info">Automática</span>':'<span class="tag tag-gray">Manual</span>'}
+      </div>
+      <div style="font-size:13.5px; margin-bottom:4px;"><b>Tema:</b> ${escapeHtml(b.tema||'—')}</div>
+      <div style="font-size:13px; color:var(--gray-500);"><b>Actividad:</b> ${escapeHtml(b.actividad||'—')}</div>
+      <div style="font-size:13px; color:var(--gray-500);"><b>Asistencia:</b> ${escapeHtml(b.asistenciaResumen||'—')}</div>
+      ${b.observaciones?`<div style="font-size:13px; margin-top:6px;"><b>Observaciones:</b> ${escapeHtml(b.observaciones)}</div>`:''}
+      <button class="btn btn-ghost btn-sm" style="margin-top:8px;" onclick="editBitacora('${b.id}')">Editar</button>
+    </div>`;
+  }).join('') : emptyState('📓','Sin entradas en la bitácora','Se llenará automáticamente cuando cierres una sesión de clase.')}
+  `;
+}
+function openNewBitacoraModal(classId){
+  openModal(`
+    <div class="modal-head"><h3>Entrada de bitácora</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Clase</label><select id="bt-clase">${STATE.classes.map(c=>`<option value="${c.id}" ${classId===c.id?'selected':''}>${classLabel(c)}</option>`).join('')}</select></div>
+      <div class="field"><label>Tema</label><input id="bt-tema" placeholder="Tema visto en clase"></div>
+      <div class="field"><label>Observaciones</label><textarea id="bt-obs" rows="3" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px;"></textarea></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="createBitacora()">Guardar</button></div>
+  `);
+}
+function createBitacora(){
+  const classId = document.getElementById('bt-clase').value;
+  STATE.bitacora.unshift({id:uid('bit'), classId, fecha:new Date().toISOString(), tema:document.getElementById('bt-tema').value,
+    actividad:'—', asistenciaResumen:'—', observaciones:document.getElementById('bt-obs').value, incidencias:'', acuerdos:'', pendientes:'', auto:false});
+  saveState(); closeModal(); toast('Entrada guardada'); render();
+}
+function editBitacora(id){
+  const b = STATE.bitacora.find(x=>x.id===id);
+  openModal(`
+    <div class="modal-head"><h3>Editar bitácora</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Observaciones</label><textarea id="bt-edit-obs" rows="4" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px;">${escapeHtml(b.observaciones||'')}</textarea></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-primary" onclick="saveBitacoraEdit('${id}')">Guardar</button></div>
+  `);
+}
+function saveBitacoraEdit(id){
+  const b = STATE.bitacora.find(x=>x.id===id);
+  b.observaciones = document.getElementById('bt-edit-obs').value;
+  saveState(); closeModal(); toast('Bitácora actualizada'); render();
+}
+
+/* ============================================================
+   VISTA: Evaluaciones (constructor simplificado)
+   ============================================================ */
+function viewEvaluaciones(){
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Evaluaciones</h1><div class="sub">Constructor con banco de preguntas · calificación final en escala 0–10.</div></div>
+    <div class="view-actions"><button class="btn btn-primary btn-sm" onclick="openNewEvalModal()">+ Nueva evaluación</button></div>
+  </div>
+  ${STATE.evaluations.length? `<div class="table-wrap"><table>
+    <thead><tr><th>Evaluación</th><th>Clase</th><th>Preguntas</th><th>Estado</th><th></th></tr></thead>
+    <tbody>${STATE.evaluations.map(ev=>{
+      const c = getClass(ev.classId);
+      return `<tr><td><b>${escapeHtml(ev.titulo)}</b></td><td>${classLabel(c)}</td><td>${ev.preguntas.length}</td>
+      <td><span class="tag ${ev.estado==='publicada'?'tag-success':'tag-gray'}">${ev.estado}</span></td>
+      <td><button class="btn btn-ghost btn-sm" onclick="publishEval('${ev.id}')">${ev.estado==='publicada'?'Ver resultados':'Publicar'}</button></td></tr>`;
+    }).join('')}</tbody>
+  </table></div>` : emptyState('🧪','Aún no has creado evaluaciones','Usa el constructor con tu banco de preguntas.', 'openNewEvalModal()', 'Nueva evaluación')}
+  `;
+}
+function openNewEvalModal(){
+  openModal(`
+    <div class="modal-head"><h3>Nueva evaluación</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Título</label><input id="ev-titulo" placeholder="Ej. Evaluación bimestral — Espacio geográfico"></div>
+      <div class="field"><label>Clase</label><select id="ev-clase">${STATE.classes.map(c=>`<option value="${c.id}">${classLabel(c)}</option>`).join('')}</select></div>
+      <div class="small-muted" style="margin:8px 0 6px; font-weight:600;">Preguntas del banco</div>
+      ${STATE.questionBank.map(q=>`<label class="check-row"><input type="checkbox" class="ev-q" value="${q.id}" checked>${escapeHtml(q.pregunta)}</label>`).join('')}
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="createEval()">Guardar borrador</button></div>
+  `);
+}
+function createEval(){
+  const titulo = document.getElementById('ev-titulo').value.trim() || 'Nueva evaluación';
+  const classId = document.getElementById('ev-clase').value;
+  const preguntas = Array.from(document.querySelectorAll('.ev-q:checked')).map(el=>el.value);
+  STATE.evaluations.push({id:uid('ev'), titulo, classId, preguntas, estado:'borrador', fecha:new Date().toISOString()});
+  saveState(); closeModal(); toast('Evaluación guardada como borrador'); render();
+}
+function publishEval(id){
+  const ev = STATE.evaluations.find(e=>e.id===id);
+  ev.estado='publicada'; saveState(); toast('Evaluación publicada — se puede abrir desde el QR inteligente de la sesión'); render();
+}
+
+/* ============================================================
+   VISTA: Banco de preguntas
+   ============================================================ */
+function viewBanco(){
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Banco de preguntas</h1><div class="sub">${STATE.questionBank.length} preguntas disponibles.</div></div>
+    <div class="view-actions"><button class="btn btn-primary btn-sm" onclick="openNewQuestionModal()">+ Nueva pregunta</button></div>
+  </div>
+  <div class="grid grid-2">
+    ${STATE.questionBank.map(q=>`
+      <div class="card">
+        <div class="flexrow" style="margin-bottom:6px;"><span class="tag tag-info">${q.tipo.replace('_',' ')}</span><span class="tag tag-gray">${q.dificultad}</span><span class="spacer"></span><span class="small-muted">${q.tema}</span></div>
+        <div style="font-weight:600; font-size:13.5px; margin-bottom:8px;">${escapeHtml(q.pregunta)}</div>
+        <div style="font-size:12.5px; color:var(--gray-500);">
+          ${q.opciones.map((o,i)=>`<div>${i===q.correcta?'✅':'▫️'} ${escapeHtml(o)}</div>`).join('')}
+        </div>
+      </div>`).join('')}
+  </div>
+  `;
+}
+function openNewQuestionModal(){
+  openModal(`
+    <div class="modal-head"><h3>Nueva pregunta</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Pregunta</label><input id="q-texto" placeholder="Escribe la pregunta"></div>
+      <div class="field"><label>Tipo</label>
+        <select id="q-tipo">
+          <option value="opcion_multiple">Opción múltiple</option>
+          <option value="vf">Verdadero / falso</option>
+          <option value="corta">Respuesta corta</option>
+          <option value="relacion">Relación</option>
+          <option value="completar">Completar</option>
+        </select>
+      </div>
+      <div class="field"><label>Opciones (una por línea, marca la correcta con *)</label>
+        <textarea id="q-opciones" rows="4" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px;">Opción A
+*Opción correcta
+Opción C</textarea>
+      </div>
+      <div class="grid grid-2">
+        <div class="field"><label>Dificultad</label><select id="q-dif"><option>básica</option><option>media</option><option>alta</option></select></div>
+        <div class="field"><label>Tema</label><input id="q-tema" value="Geografía"></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="createQuestion()">Guardar</button></div>
+  `);
+}
+function createQuestion(){
+  const lines = document.getElementById('q-opciones').value.split('\n').map(l=>l.trim()).filter(Boolean);
+  let correcta = 0;
+  const opciones = lines.map((l,i)=>{ if(l.startsWith('*')){ correcta=i; return l.slice(1).trim(); } return l; });
+  STATE.questionBank.push({
+    id:uid('q'), pregunta:document.getElementById('q-texto').value.trim()||'Nueva pregunta',
+    tipo:document.getElementById('q-tipo').value, opciones, correcta,
+    dificultad:document.getElementById('q-dif').value, tema:document.getElementById('q-tema').value, materia:'Geografía'
+  });
+  saveState(); closeModal(); toast('Pregunta agregada al banco'); render();
+}
+
+/* ============================================================
+   VISTA: Analítica académica
+   ============================================================ */
+function viewAnalitica(){
+  const filterClase = routeParam('clase');
+  const classes = filterClase ? [getClass(filterClase)] : STATE.classes;
+  const allAvgs = classes.map(c=>classAverage(c.id)).filter(v=>v!==null);
+  const overall = allAvgs.length ? (allAvgs.reduce((a,b)=>a+b,0)/allAvgs.length) : null;
+  const dist = {verde:0, amarillo:0, rojo:0};
+  classes.forEach(c=>c.alumnos.forEach(a=>{
+    const lvl = studentAlertLevel(c.id,a.id).level;
+    dist[lvl==='green'?'verde':lvl==='yellow'?'amarillo':'rojo']++;
+  }));
+  const totalAl = dist.verde+dist.amarillo+dist.rojo || 1;
+
+  return `
+  <div class="view-head"><h1>Analítica académica</h1><div class="sub">Promedio, distribución, evolución y asistencia.</div></div>
+  ${classPicker('#/analitica', filterClase)}
+  <div class="grid grid-3" style="margin-bottom:20px;">
+    <div class="stat-card"><div class="lbl">Promedio general</div><div class="num">${overall!==null?overall.toFixed(1):'—'}<small>/10</small></div></div>
+    <div class="stat-card"><div class="lbl">Alumnos en seguimiento</div><div class="num">${dist.amarillo+dist.rojo}</div></div>
+    <div class="stat-card"><div class="lbl">Sesiones registradas</div><div class="num">${STATE.sessions.filter(s=>classes.some(c=>c.id===s.classId)).length}</div></div>
+  </div>
+
+  <div class="section-title">Distribución de seguimiento</div>
+  <div class="card" style="margin-bottom:20px;">
+    <div style="display:flex; height:18px; border-radius:9px; overflow:hidden; margin-bottom:10px;">
+      <div style="width:${dist.verde/totalAl*100}%; background:var(--success);"></div>
+      <div style="width:${dist.amarillo/totalAl*100}%; background:var(--warning);"></div>
+      <div style="width:${dist.rojo/totalAl*100}%; background:var(--alert);"></div>
+    </div>
+    <div class="flexrow" style="gap:18px; font-size:12.5px;">
+      <span>🟢 Adecuado (${dist.verde})</span><span>🟡 Seguimiento (${dist.amarillo})</span><span>🔴 Atención (${dist.rojo})</span>
+    </div>
+  </div>
+
+  <div class="section-title">Promedio por clase</div>
+  <div class="card">
+    ${classes.map(c=>{
+      const avg = classAverage(c.id) || 0;
+      return `<div style="margin-bottom:12px;">
+        <div class="flexrow" style="margin-bottom:4px; font-size:12.5px;"><span>${classLabel(c)}</span><span class="spacer"></span><b>${avg?avg.toFixed(1):'—'}</b></div>
+        <div class="progress-track"><div class="progress-fill" style="width:${avg*10}%; background:${avg<6?'var(--alert)':avg<8?'var(--warning)':'var(--success)'}"></div></div>
+      </div>`;
+    }).join('')}
+  </div>
+
+  <div class="section-title">Asistencia por clase</div>
+  <div class="card">
+    ${classes.map(c=>{
+      const sess = STATE.sessions.filter(s=>s.classId===c.id && s.cerrada);
+      const avgAtt = sess.length ? Math.round(sess.reduce((n,s)=>n+((s.presentes||0)/c.alumnos.length*100),0)/sess.length) : null;
+      return `<div style="margin-bottom:12px;">
+        <div class="flexrow" style="margin-bottom:4px; font-size:12.5px;"><span>${classLabel(c)}</span><span class="spacer"></span><b>${avgAtt!==null?avgAtt+'%':'sin sesiones'}</b></div>
+        <div class="progress-track"><div class="progress-fill" style="width:${avgAtt||0}%; background:var(--info);"></div></div>
+      </div>`;
+    }).join('')}
+  </div>
+  `;
+}
+
+/* ============================================================
+   VISTA: Calificaciones (libro)
+   ============================================================ */
+function viewCalificaciones(){
+  const filterClase = routeParam('clase') || STATE.classes[0].id;
+  const c = getClass(filterClase);
+  const acts = classActivities(c.id).filter(a=>a.evaluable);
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Libro de calificaciones</h1><div class="sub">${classLabel(c)} · escala 0–10 · ponderación ${weightSum(c)}%</div></div>
+    <div class="view-actions">
+      <button class="btn btn-outline btn-sm" onclick="openClassConfigModal('${c.id}')">⚖️ Ponderaciones</button>
+      <input id="grade-search" placeholder="Buscar alumno…" style="padding:8px 12px; border:1px solid var(--line); border-radius:8px; font-size:13px;" oninput="filterGradeTable(this.value)">
+    </div>
+  </div>
+  ${classPicker('#/calificaciones', filterClase)}
+  ${acts.length ? `
+  <div class="table-wrap">
+    <table id="grade-table">
+      <thead><tr><th>Alumno</th>${acts.map(a=>`<th title="${escapeHtml(a.titulo)}">${escapeHtml(a.titulo.slice(0,14))}${a.titulo.length>14?'…':''}</th>`).join('')}<th>Promedio</th></tr></thead>
+      <tbody>
+        ${c.alumnos.map(al=>{
+          const avg = studentAverage(c.id, al.id);
+          return `<tr data-name="${escapeHtml(al.nombre.toLowerCase())}">
+            <td>${escapeHtml(al.nombre)}</td>
+            ${acts.map(a=>{
+              const g = ensureGradeRow(a.id, al.id);
+              return `<td>${g.valor===null?'<span class="small-muted">sin calif.</span>':g.valor.toFixed(1)}</td>`;
+            }).join('')}
+            <td><b>${avg!==null?avg.toFixed(1):'—'}</b></td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>
+  <div class="small-muted" style="margin-top:10px;">Exportar: <a href="javascript:void(0)" onclick="generateReport('${c.id}','calificaciones','PDF')">PDF</a> · <a href="javascript:void(0)" onclick="generateReport('${c.id}','calificaciones','XLSX')">XLSX</a> · <a href="javascript:void(0)" onclick="generateReport('${c.id}','calificaciones','CSV')">CSV</a></div>
+  ` : emptyState('📈','Sin actividades evaluables aún','Crea actividades o evaluaciones para llenar el libro de calificaciones.')}
+  `;
+}
+function hookCalificaciones(){}
+function filterGradeTable(q){
+  q = q.toLowerCase();
+  document.querySelectorAll('#grade-table tbody tr').forEach(tr=>{
+    tr.style.display = tr.dataset.name.includes(q) ? '' : 'none';
+  });
+}
+
+/* ============================================================
+   VISTA: Monitor / Centro de seguimiento
+   ============================================================ */
+function viewMonitor(){
+  const rows = [];
+  STATE.classes.forEach(c=>c.alumnos.forEach(a=>{
+    const alert = studentAlertLevel(c.id,a.id);
+    rows.push({c,a,alert});
+  }));
+  rows.sort((x,y)=> ({red:0,yellow:1,green:2}[x.alert.level]) - ({red:0,yellow:1,green:2}[y.alert.level]));
+  const priority = rows.filter(r=>r.alert.level!=='green').slice(0,25);
+  return `
+  <div class="view-head"><h1>Monitor</h1><div class="sub">Indicadores de asistencia, académico, actividades e incidencias. Seguimiento manual — nunca un diagnóstico personal.</div></div>
+  <div class="grid grid-4" style="margin-bottom:18px;">
+    <div class="stat-card"><div class="lbl">🔴 Atención</div><div class="num">${rows.filter(r=>r.alert.level==='red').length}</div></div>
+    <div class="stat-card"><div class="lbl">🟡 Seguimiento</div><div class="num">${rows.filter(r=>r.alert.level==='yellow').length}</div></div>
+    <div class="stat-card"><div class="lbl">🟢 Adecuado</div><div class="num">${rows.filter(r=>r.alert.level==='green').length}</div></div>
+    <div class="stat-card"><div class="lbl">Total alumnos</div><div class="num">${rows.length}</div></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Alumno</th><th>Clase</th><th>Nivel</th><th>Motivo</th><th></th></tr></thead>
+      <tbody>
+        ${priority.length ? priority.map(r=>{
+          const dot = {red:'🔴',yellow:'🟡',green:'🟢'}[r.alert.level];
+          return `<tr>
+            <td>${escapeHtml(r.a.nombre)}</td>
+            <td>${classLabel(r.c)}</td>
+            <td>${dot} ${r.alert.level==='red'?'Atención':'Seguimiento'}</td>
+            <td class="small-muted">${r.alert.reasons.join(' · ')}</td>
+            <td><button class="btn btn-ghost btn-sm" onclick="openNewIncidentModal('${r.c.id}','${r.a.id}')">Registrar incidencia</button></td>
+          </tr>`;
+        }).join('') : `<tr><td colspan="5"><div class="empty-state"><div class="ei">🟢</div><div class="et">Todo en orden</div><div class="ed">Ningún alumno requiere atención por ahora.</div></div></td></tr>`}
+      </tbody>
+    </table>
+  </div>
+  `;
+}
+
+/* ============================================================
+   VISTA: Incidencias
+   ============================================================ */
+function viewIncidencias(){
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Incidencias</h1><div class="sub">${STATE.incidents.length} registradas.</div></div>
+    <div class="view-actions"><button class="btn btn-primary btn-sm" onclick="openNewIncidentModal()">+ Nueva incidencia</button></div>
+  </div>
+  ${STATE.incidents.length? `<div class="table-wrap"><table>
+    <thead><tr><th>Alumno</th><th>Clase</th><th>Categoría</th><th>Fecha</th><th>Estado</th><th></th></tr></thead>
+    <tbody>${STATE.incidents.map(i=>{
+      const c = getClass(i.classId); const al = getStudent(i.classId, i.studentId);
+      const tagClass = {'ABIERTA':'tag-alert','EN SEGUIMIENTO':'tag-warning','CERRADA':'tag-success'}[i.estado];
+      return `<tr><td>${al?escapeHtml(al.nombre):'—'}</td><td>${classLabel(c)}</td><td>${escapeHtml(i.categoria)}</td><td>${fmtDate(i.fecha)}</td>
+      <td><span class="tag ${tagClass}">${i.estado}</span></td>
+      <td><select onchange="setIncidentState('${i.id}', this.value)" style="font-size:12px; padding:4px 6px; border-radius:6px; border:1px solid var(--line);">
+        ${['ABIERTA','EN SEGUIMIENTO','CERRADA'].map(s=>`<option ${s===i.estado?'selected':''}>${s}</option>`).join('')}
+      </select></td></tr>`;
+    }).join('')}</tbody>
+  </table></div>` : emptyState('⚠️','Sin incidencias registradas','Cuando registres una, aparecerá aquí con su estado de seguimiento.', 'openNewIncidentModal()', 'Registrar incidencia')}
+  `;
+}
+function openNewIncidentModal(classId, studentId){
+  const c0 = classId ? getClass(classId) : STATE.classes[0];
+  openModal(`
+    <div class="modal-head"><h3>Nueva incidencia</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Clase</label><select id="in-clase" onchange="refreshIncidentStudents()">${STATE.classes.map(c=>`<option value="${c.id}" ${c.id===c0.id?'selected':''}>${classLabel(c)}</option>`).join('')}</select></div>
+      <div class="field"><label>Alumno</label><select id="in-alumno">${c0.alumnos.map(a=>`<option value="${a.id}" ${a.id===studentId?'selected':''}>${escapeHtml(a.nombre)}</option>`).join('')}</select></div>
+      <div class="field"><label>Categoría</label><select id="in-categoria"><option>Conducta</option><option>Académica</option><option>Asistencia</option><option>Convivencia</option><option>Otra</option></select></div>
+      <div class="field"><label>Descripción</label><textarea id="in-desc" rows="3" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px;"></textarea></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="createIncident()">Registrar</button></div>
+  `);
+}
+function refreshIncidentStudents(){
+  const c = getClass(document.getElementById('in-clase').value);
+  document.getElementById('in-alumno').innerHTML = c.alumnos.map(a=>`<option value="${a.id}">${escapeHtml(a.nombre)}</option>`).join('');
+}
+function createIncident(){
+  STATE.incidents.push({
+    id:uid('inc'), classId:document.getElementById('in-clase').value, studentId:document.getElementById('in-alumno').value,
+    categoria:document.getElementById('in-categoria').value, descripcion:document.getElementById('in-desc').value,
+    fecha:new Date().toISOString(), estado:'ABIERTA', docente:STATE.docente.nombre, evidencia:null
+  });
+  saveState(); closeModal(); toast('Incidencia registrada'); render();
+}
+function setIncidentState(id, estado){
+  STATE.incidents.find(i=>i.id===id).estado = estado; saveState(); toast('Estado actualizado'); render();
+}
+
+/* ============================================================
+   VISTA: Justificantes
+   ============================================================ */
+function viewJustificantes(){
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Justificantes</h1><div class="sub">${STATE.justifications.length} recibidos.</div></div>
+    <div class="view-actions"><button class="btn btn-primary btn-sm" onclick="openNewJustModal()">+ Nuevo justificante</button></div>
+  </div>
+  ${STATE.justifications.length? `<div class="table-wrap"><table>
+    <thead><tr><th>Alumno</th><th>Clase</th><th>Motivo</th><th>Fecha</th><th>Estado</th></tr></thead>
+    <tbody>${STATE.justifications.map(j=>{
+      const c = getClass(j.classId); const al = getStudent(j.classId, j.studentId);
+      const tagClass = {'PENDIENTE':'tag-warning','APROBADO':'tag-success','RECHAZADO':'tag-alert'}[j.estado];
+      return `<tr><td>${al?escapeHtml(al.nombre):'—'}</td><td>${classLabel(c)}</td><td>${escapeHtml(j.motivo)}</td><td>${fmtDate(j.fecha)}</td>
+      <td><span class="tag ${tagClass}">${j.estado}</span>
+      ${j.estado==='PENDIENTE'?`<button class="btn btn-ghost btn-sm" onclick="setJustState('${j.id}','APROBADO')">Aprobar</button><button class="btn btn-ghost btn-sm" onclick="setJustState('${j.id}','RECHAZADO')">Rechazar</button>`:''}
+      </td></tr>`;
+    }).join('')}</tbody>
+  </table></div>` : emptyState('📑','Sin justificantes','Los justificantes que registres aparecerán aquí para su revisión.', 'openNewJustModal()', 'Registrar justificante')}
+  `;
+}
+function openNewJustModal(){
+  const c0 = STATE.classes[0];
+  openModal(`
+    <div class="modal-head"><h3>Nuevo justificante</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Clase</label><select id="ju-clase" onchange="refreshJustStudents()">${STATE.classes.map(c=>`<option value="${c.id}">${classLabel(c)}</option>`).join('')}</select></div>
+      <div class="field"><label>Alumno</label><select id="ju-alumno">${c0.alumnos.map(a=>`<option value="${a.id}">${escapeHtml(a.nombre)}</option>`).join('')}</select></div>
+      <div class="field"><label>Motivo</label><input id="ju-motivo" placeholder="Ej. Cita médica"></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="createJust()">Registrar</button></div>
+  `);
+}
+function refreshJustStudents(){
+  const c = getClass(document.getElementById('ju-clase').value);
+  document.getElementById('ju-alumno').innerHTML = c.alumnos.map(a=>`<option value="${a.id}">${escapeHtml(a.nombre)}</option>`).join('');
+}
+function createJust(){
+  STATE.justifications.push({id:uid('jus'), classId:document.getElementById('ju-clase').value, studentId:document.getElementById('ju-alumno').value,
+    motivo:document.getElementById('ju-motivo').value, fecha:new Date().toISOString(), estado:'PENDIENTE'});
+  saveState(); closeModal(); toast('Justificante registrado'); render();
+}
+function setJustState(id, estado){
+  STATE.justifications.find(j=>j.id===id).estado=estado; saveState(); toast('Justificante '+estado.toLowerCase()); render();
+}
+
+/* ============================================================
+   VISTA: Proyectos
+   ============================================================ */
+function viewProyectos(){
+  const estados = ['planeación','en curso','cerrado'];
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Proyectos</h1><div class="sub">Académicos, eventos, mejora escolar y más.</div></div>
+    <div class="view-actions"><button class="btn btn-primary btn-sm" onclick="openNewProjectModal()">+ Nuevo proyecto</button></div>
+  </div>
+  <div class="grid grid-3">
+    ${estados.map(es=>`
+      <div>
+        <div class="section-title" style="margin-top:0; text-transform:capitalize;">${es}</div>
+        ${STATE.projects.filter(p=>p.estado===es).map(p=>`
+          <div class="card" style="margin-bottom:10px;">
+            <div style="font-weight:700; font-size:13.5px; margin-bottom:4px;">${escapeHtml(p.nombre)}</div>
+            <div class="small-muted" style="margin-bottom:8px;">${p.categoria} · ${escapeHtml(p.responsable)}</div>
+            <div class="progress-track" style="margin-bottom:6px;"><div class="progress-fill" style="width:${p.progreso}%"></div></div>
+            <div class="small-muted">${p.progreso}% · ${p.actividades} actividades · ${p.evidencias} evidencias</div>
+            <select style="margin-top:8px; font-size:12px; padding:4px 6px; border-radius:6px; border:1px solid var(--line);" onchange="setProjectState('${p.id}', this.value)">
+              ${estados.map(s=>`<option ${s===p.estado?'selected':''}>${s}</option>`)}
+            </select>
+          </div>`).join('') || `<div class="small-muted" style="padding:10px 0;">Sin proyectos</div>`}
+      </div>`).join('')}
+  </div>
+  `;
+}
+function openNewProjectModal(){
+  openModal(`
+    <div class="modal-head"><h3>Nuevo proyecto</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Nombre</label><input id="pr-nombre" placeholder="Nombre del proyecto"></div>
+      <div class="field"><label>Categoría</label>
+        <select id="pr-cat">${['académicos','eventos','comunicación','mejora escolar','concursos','institucionales','otros'].map(c=>`<option>${c}</option>`).join('')}</select>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="createProject()">Crear</button></div>
+  `);
+}
+function createProject(){
+  STATE.projects.push({id:uid('pr'), nombre:document.getElementById('pr-nombre').value.trim()||'Nuevo proyecto',
+    categoria:document.getElementById('pr-cat').value, estado:'planeación', responsable:STATE.docente.nombre,
+    inicio:new Date().toISOString(), fin:'', progreso:0, actividades:0, evidencias:0});
+  saveState(); closeModal(); toast('Proyecto creado'); render();
+}
+function setProjectState(id, estado){
+  STATE.projects.find(p=>p.id===id).estado=estado; saveState(); render();
+}
+
+/* ============================================================
+   VISTA: Equipos
+   ============================================================ */
+function viewEquipos(){
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Equipos</h1><div class="sub">Crea, aleatoriza y asocia equipos a un proyecto.</div></div>
+    <div class="view-actions"><button class="btn btn-primary btn-sm" onclick="openTeamBuilder()">+ Generar equipos</button></div>
+  </div>
+  ${STATE.teams.length? STATE.teams.map(t=>`
+    <div class="card" style="margin-bottom:12px;">
+      <div class="flexrow"><b>${escapeHtml(t.nombre)}</b><span class="spacer"></span><span class="small-muted">${classLabel(getClass(t.classId))}</span></div>
+      <div class="grid grid-3" style="margin-top:10px;">
+        ${t.equipos.map((eq,i)=>`<div class="card" style="background:var(--paper-50);"><b>Equipo ${i+1}</b><div class="small-muted">${eq.map(id=>getStudent(t.classId,id)?.nombre.split(' ')[0]).join(', ')}</div></div>`).join('')}
+      </div>
+    </div>`).join('') : emptyState('👥','Sin equipos generados','Selecciona una clase y el número de equipos para aleatorizar.', 'openTeamBuilder()', 'Generar equipos')}
+  `;
+}
+function openTeamBuilder(){
+  openModal(`
+    <div class="modal-head"><h3>Generar equipos</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Clase</label><select id="tm-clase">${STATE.classes.map(c=>`<option value="${c.id}">${classLabel(c)}</option>`).join('')}</select></div>
+      <div class="field"><label>Número de equipos</label><input type="number" id="tm-n" value="4" min="2" max="10"></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="generateTeams()">Aleatorizar</button></div>
+  `);
+}
+function generateTeams(){
+  const classId = document.getElementById('tm-clase').value;
+  const n = Math.max(2, Number(document.getElementById('tm-n').value)||4);
+  const c = getClass(classId);
+  const ids = c.alumnos.map(a=>a.id);
+  for(let i=ids.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [ids[i],ids[j]]=[ids[j],ids[i]]; }
+  const equipos = Array.from({length:n}, ()=>[]);
+  ids.forEach((id,i)=> equipos[i%n].push(id));
+  STATE.teams.push({id:uid('tm'), nombre:`Equipos · ${classLabel(c)}`, classId, equipos});
+  saveState(); closeModal(); toast('Equipos generados aleatoriamente'); render();
+}
+
+/* ============================================================
+   VISTA: Acomodo del salón
+   ============================================================ */
+function viewAcomodo(){
+  const layouts = ['filas','parejas','equipos','círculo','U','personalizado'];
+  return `
+  <div class="view-head"><h1>Acomodo del salón</h1><div class="sub">Guarda la configuración preferida por clase.</div></div>
+  <div class="grid grid-3">
+    ${STATE.classes.map(c=>{
+      const current = STATE.layouts[c.id]?.tipo || 'filas';
+      return `<div class="card">
+        <div style="font-weight:700; margin-bottom:10px;">${classLabel(c)}</div>
+        <select style="width:100%; padding:8px; border:1px solid var(--line); border-radius:8px;" onchange="setLayout('${c.id}', this.value)">
+          ${layouts.map(l=>`<option ${l===current?'selected':''}>${l}</option>`)}
+        </select>
+        <div class="small-muted" style="margin-top:8px;">${STATE.layouts[c.id]?'Guardado':'Sin guardar aún'}</div>
+      </div>`;
+    }).join('')}
+  </div>
+  `;
+}
+function setLayout(classId, tipo){
+  STATE.layouts[classId] = {tipo, guardadoEn:new Date().toISOString()};
+  saveState(); toast('Acomodo guardado'); render();
+}
+
+/* ============================================================
+   VISTA: Grupos
+   ============================================================ */
+function viewGrupos(){
+  return `
+  <div class="view-head"><h1>Grupos</h1><div class="sub">Grupos de la escuela activa en el ciclo ${STATE.escuela.ciclo}.</div></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Grupo</th><th>Grado</th><th>Materia</th><th>Docente</th><th>Alumnos</th><th></th></tr></thead>
+      <tbody>${STATE.classes.map(c=>`
+        <tr><td><b>${c.grado}${c.grupo}</b></td><td>${c.grado}</td><td>${c.materia}</td><td>${escapeHtml(c.docente)}</td><td>${c.alumnos.length}</td>
+        <td><a class="btn btn-ghost btn-sm" href="#/clase/${c.id}">Ver →</a></td></tr>`).join('')}</tbody>
+    </table>
+  </div>
+  `;
+}
+
+/* ============================================================
+   VISTA: Alumnos (roster global)
+   ============================================================ */
+function viewAlumnos(){
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Alumnos</h1><div class="sub">${STATE.classes.reduce((n,c)=>n+c.alumnos.length,0)} alumnos en todas tus clases.</div></div>
+    <div class="view-actions"><input id="al-search" placeholder="Buscar alumno…" style="padding:8px 12px; border:1px solid var(--line); border-radius:8px;" oninput="filterStudentsTable(this.value)"></div>
+  </div>
+  <div class="table-wrap">
+    <table id="students-table">
+      <thead><tr><th>Alumno</th><th>Matrícula</th><th>Grupo</th><th>Promedio</th><th>Seguimiento</th></tr></thead>
+      <tbody>
+        ${STATE.classes.flatMap(c=>c.alumnos.map(a=>{
+          const avg = studentAverage(c.id,a.id);
+          const alert = studentAlertLevel(c.id,a.id);
+          const dot = {green:'🟢',yellow:'🟡',red:'🔴'}[alert.level];
+          return `<tr data-name="${escapeHtml(a.nombre.toLowerCase())}">
+            <td>${escapeHtml(a.nombre)}</td><td class="mono small-muted">${a.matricula}</td><td>${c.grado}${c.grupo}</td>
+            <td>${avg!==null?avg.toFixed(1):'<span class="small-muted">sin calificar</span>'}</td><td>${dot}</td>
+          </tr>`;
+        })).join('')}
+      </tbody>
+    </table>
+  </div>
+  `;
+}
+function filterStudentsTable(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('#students-table tbody tr').forEach(tr=> tr.style.display = tr.dataset.name.includes(q)?'':'none');
+}
+
+/* ============================================================
+   VISTA: Directorio
+   ============================================================ */
+function viewDirectorio(){
+  const staff = [
+    {nombre:STATE.docente.nombre, rol:'Docente · Geografía', estado:'En línea'},
+    {nombre:STATE.escuela.director, rol:'Dirección', estado:'Disponible'},
+    {nombre:'Mtro. Raúl Ponce Estrada', rol:'Coordinación académica', estado:'Disponible'},
+    {nombre:'Mtra. Carla Iveth Núñez', rol:'Docente · Matemáticas', estado:'Fuera de línea'},
+    {nombre:'Mtro. Emilio Sandoval Rey', rol:'Docente · Español', estado:'Fuera de línea'},
+  ];
+  return `
+  <div class="view-head"><h1>Directorio</h1><div class="sub">Docentes, directivos y coordinadores. Se respetan permisos por rol.</div></div>
+  <div class="grid grid-2">
+    ${staff.map(p=>`
+      <div class="card flexrow">
+        <div class="avatar" style="background:var(--info);">${initials(p.nombre)}</div>
+        <div><div style="font-weight:600; font-size:13.5px;">${escapeHtml(p.nombre)}</div><div class="small-muted">${p.rol} · ${p.estado}</div></div>
+      </div>`).join('')}
+  </div>
+  `;
+}
+
+/* ============================================================
+   VISTA: Horarios
+   ============================================================ */
+function viewHorarios(){
+  const dias = ['Lun','Mar','Mié','Jue','Vie'];
+  const horas = ['07:30','08:15','09:00','09:45','11:00','11:45','13:00'];
+  return `
+  <div class="view-head"><h1>Horario</h1><div class="sub">Vista semanal de tus clases.</div></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Hora</th>${dias.map(d=>`<th>${d}</th>`).join('')}</tr></thead>
+      <tbody>
+        ${horas.map((h,hi)=>`<tr><td class="mono small-muted">${h}</td>${dias.map((d,di)=>{
+          const idx = (hi+di)%STATE.classes.length;
+          const show = (hi+di)%3===0;
+          const c = STATE.classes[idx];
+          return `<td>${show?`<span class="tag tag-info">${c.grado}${c.grupo}</span>`:''}</td>`;
+        }).join('')}</tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+  `;
+}
+
+/* ============================================================
+   VISTA: Avisos
+   ============================================================ */
+function viewAvisos(){
+  return `
+  <div class="view-head"><h1>Avisos</h1><div class="sub">Publica avisos al muro escolar desde aquí.</div></div>
+  <div class="card" style="margin-bottom:18px;">
+    <textarea id="av-texto" rows="2" placeholder="Escribe un aviso para la comunidad…" style="width:100%; padding:10px; border:1px solid var(--line); border-radius:8px;"></textarea>
+    <button class="btn btn-primary btn-sm" style="margin-top:8px;" onclick="postAnnouncement()">📢 Publicar aviso</button>
+  </div>
+  ${STATE.announcements.map(a=>`
+    <div class="card" style="margin-bottom:10px;">
+      <div class="flexrow"><b>${escapeHtml(a.autor)}</b><span class="spacer"></span><span class="small-muted">${fmtDate(a.fecha)}</span></div>
+      <div style="margin-top:6px; font-size:13.5px;">${escapeHtml(a.texto)}</div>
+      <div class="small-muted" style="margin-top:8px;">❤️ ${a.reacciones} · 💬 ${a.comentarios}</div>
+    </div>`).join('')}
+  `;
+}
+function postAnnouncement(){
+  const texto = document.getElementById('av-texto').value.trim();
+  if(!texto){ toast('Escribe un aviso primero'); return; }
+  STATE.announcements.unshift({id:uid('an'), autor:STATE.docente.nombre, texto, fecha:new Date().toISOString(), reacciones:0, comentarios:0});
+  saveState(); toast('Aviso publicado'); render();
+}
+
+/* ============================================================
+   VISTA: Comunidad (muro)
+   ============================================================ */
+function viewComunidad(){
+  return `
+  <div class="view-head"><h1>Comunidad</h1><div class="sub">Muro escolar: publicaciones, comentarios y reacciones.</div></div>
+  <div class="card" style="margin-bottom:18px;">
+    <textarea id="cm-texto" rows="2" placeholder="Comparte algo con la comunidad escolar…" style="width:100%; padding:10px; border:1px solid var(--line); border-radius:8px;"></textarea>
+    <button class="btn btn-primary btn-sm" style="margin-top:8px;" onclick="postToWall()">Publicar</button>
+  </div>
+  ${STATE.announcements.map(a=>`
+    <div class="card" style="margin-bottom:10px;">
+      <div class="flexrow"><div class="avatar-sm" style="background:var(--turq-100); color:var(--turq-600);">${initials(a.autor)}</div><b>${escapeHtml(a.autor)}</b><span class="spacer"></span><span class="small-muted">${fmtDate(a.fecha)}</span></div>
+      <div style="margin-top:8px; font-size:13.5px;">${escapeHtml(a.texto)}</div>
+      <div class="flexrow" style="margin-top:10px; gap:14px;">
+        <button class="btn btn-ghost btn-sm" onclick="reactWall('${a.id}')">❤️ ${a.reacciones}</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Comentarios en modo demo')">💬 ${a.comentarios}</button>
+      </div>
+    </div>`).join('')}
+  `;
+}
+function postToWall(){
+  const texto = document.getElementById('cm-texto').value.trim();
+  if(!texto){ toast('Escribe algo para publicar'); return; }
+  STATE.announcements.unshift({id:uid('an'), autor:STATE.docente.nombre, texto, fecha:new Date().toISOString(), reacciones:0, comentarios:0});
+  saveState(); toast('Publicado en el muro'); render();
+}
+function reactWall(id){
+  STATE.announcements.find(a=>a.id===id).reacciones++; saveState(); render();
+}
+
+/* ============================================================
+   VISTA: Mensajes
+   ============================================================ */
+function viewMensajes(){
+  return `
+  <div class="view-head"><h1>Mensajes</h1><div class="sub">Docente–docente, directivo–docente y coordinador–docente. (Estudiantes y familias: próximamente.)</div></div>
+  ${STATE.messages.map(m=>`
+    <div class="card flexrow" style="margin-bottom:10px; ${!m.leido?'border-color:var(--turq-400);':''}" onclick="markMsgRead('${m.id}')">
+      <div class="avatar-sm" style="background:var(--info-bg); color:var(--info);">${initials(m.de)}</div>
+      <div style="flex:1;"><div style="font-weight:600; font-size:13px;">${escapeHtml(m.de)} ${!m.leido?'<span class="tag tag-info">Nuevo</span>':''}</div><div class="small-muted">${escapeHtml(m.preview)}</div></div>
+      <div class="small-muted">${fmtDate(m.fecha)}</div>
+    </div>`).join('')}
+  `;
+}
+function markMsgRead(id){ STATE.messages.find(m=>m.id===id).leido=true; saveState(); render(); }
+
+/* ============================================================
+   VISTA: Calendario
+   ============================================================ */
+function viewCalendario(){
+  const now = new Date();
+  const year=now.getFullYear(), month=now.getMonth();
+  const first = new Date(year,month,1);
+  const startDow = first.getDay();
+  const daysInMonth = new Date(year,month+1,0).getDate();
+  const eventsByDay = {};
+  const addEv = (dateIso,label,type)=>{
+    const d = new Date(dateIso);
+    if(d.getMonth()!==month || d.getFullYear()!==year) return;
+    const day = d.getDate();
+    (eventsByDay[day] = eventsByDay[day]||[]).push({label,type});
+  };
+  STATE.sessions.forEach(s=>addEv(s.fecha, classLabel(getClass(s.classId)), 'info'));
+  STATE.activities.forEach(a=>addEv(a.fecha, a.titulo, 'warning'));
+  STATE.projects.forEach(p=>addEv(p.inicio, p.nombre, 'success'));
+
+  let cells = '';
+  for(let i=0;i<startDow;i++) cells += `<div></div>`;
+  for(let d=1; d<=daysInMonth; d++){
+    const isToday = d===now.getDate();
+    const evs = eventsByDay[d]||[];
+    cells += `<div style="min-height:76px; border:1px solid var(--line); border-radius:8px; padding:6px; ${isToday?'border-color:var(--turq-500); background:var(--turq-100);':''}">
+      <div style="font-size:11px; font-weight:700; margin-bottom:4px;">${d}</div>
+      ${evs.slice(0,2).map(e=>`<div class="tag tag-${e.type}" style="display:block; margin-bottom:2px; font-size:9.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(e.label)}</div>`).join('')}
+      ${evs.length>2?`<div class="small-muted" style="font-size:9.5px;">+${evs.length-2} más</div>`:''}
+    </div>`;
+  }
+  return `
+  <div class="view-head"><h1>Calendario</h1><div class="sub">${now.toLocaleDateString('es-MX',{month:'long', year:'numeric'})}</div></div>
+  <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:8px; font-size:11px; color:var(--gray-500); font-weight:700;">
+    ${['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'].map(d=>`<div>${d}</div>`).join('')}
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:6px;">${cells}</div>
+  `;
+}
+
+/* ============================================================
+   VISTA: Reportes
+   ============================================================ */
+function viewReportes(){
+  const tipos = [
+    ['asistencia','Asistencia'],['calificaciones','Calificaciones'],['actividades','Actividades'],
+    ['evaluaciones','Evaluaciones'],['proyectos','Proyectos'],['incidencias','Incidencias'],
+    ['justificantes','Justificantes'],['estadisticas','Estadísticas'],['seguimiento','Seguimiento'],
+  ];
+  const filterClase = routeParam('clase') || STATE.classes[0].id;
+  return `
+  <div class="view-head"><h1>Reportes</h1><div class="sub">Genera reportes en PDF, XLSX o CSV. Se guardan en el visor de reportes.</div></div>
+  ${classPicker('#/reportes', filterClase)}
+  <div class="grid grid-3">
+    ${tipos.map(([key,label])=>`
+      <div class="card">
+        <div style="font-weight:700; margin-bottom:10px;">${label}</div>
+        <div class="flexrow" style="gap:6px;">
+          <button class="btn btn-outline btn-sm" onclick="generateReport('${filterClase}','${key}','PDF')">PDF</button>
+          <button class="btn btn-outline btn-sm" onclick="generateReport('${filterClase}','${key}','XLSX')">XLSX</button>
+          <button class="btn btn-outline btn-sm" onclick="generateReport('${filterClase}','${key}','CSV')">CSV</button>
+        </div>
+      </div>`).join('')}
+  </div>
+  `;
+}
+function generateReport(classId, tipo, formato){
+  const c = getClass(classId);
+  STATE.reports.unshift({id:uid('rep'), classId, tipo, formato, nombre:`${tipo}_${c.grado}${c.grupo}_${new Date().toISOString().slice(0,10)}.${formato.toLowerCase()}`, fecha:new Date().toISOString(), archivado:false});
+  notify(`Reporte de ${tipo} (${formato}) generado para ${classLabel(c)}`, 'success');
+  saveState();
+  toast('Reporte generado — revísalo en el visor de reportes', 'success');
+  render();
+}
+
+/* ============================================================
+   VISTA: Visor de reportes
+   ============================================================ */
+function viewVisor(){
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Visor de reportes</h1><div class="sub">${STATE.reports.length} generados.</div></div>
+    <div class="view-actions"><input id="rep-search" placeholder="Buscar…" style="padding:8px 12px; border:1px solid var(--line); border-radius:8px;" oninput="filterReports(this.value)"></div>
+  </div>
+  ${STATE.reports.length? `<div class="table-wrap"><table id="reports-table">
+    <thead><tr><th>Reporte</th><th>Clase</th><th>Formato</th><th>Fecha</th><th></th></tr></thead>
+    <tbody>${STATE.reports.map(r=>{
+      const c=getClass(r.classId);
+      return `<tr data-name="${r.nombre.toLowerCase()}"><td>${r.nombre}</td><td>${classLabel(c)}</td><td><span class="tag tag-info">${r.formato}</span></td><td>${fmtDate(r.fecha)}</td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Descarga simulada en esta demo')">⬇ Descargar</button>
+        <button class="btn btn-ghost btn-sm" onclick="archiveReport('${r.id}')">${r.archivado?'Desarchivar':'Archivar'}</button>
+      </td></tr>`;
+    }).join('')}</tbody>
+  </table></div>` : emptyState('🔍','Aún no hay reportes','Genera uno desde la sección de Reportes.', "navigate('#/reportes')", 'Ir a reportes')}
+  `;
+}
+function filterReports(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('#reports-table tbody tr').forEach(tr=>tr.style.display=tr.dataset.name.includes(q)?'':'none');
+}
+function archiveReport(id){
+  const r = STATE.reports.find(x=>x.id===id); r.archivado=!r.archivado; saveState(); render();
+}
+
+/* ============================================================
+   VISTA: Documentos
+   ============================================================ */
+function viewDocumentos(){
+  return `
+  <div class="view-head view-head-row">
+    <div><h1>Documentos</h1><div class="sub">${STATE.documents.length} archivos.</div></div>
+    <div class="view-actions"><button class="btn btn-primary btn-sm" onclick="openNewDocModal()">+ Agregar documento</button></div>
+  </div>
+  ${STATE.documents.length? `<div class="grid grid-3">
+    ${STATE.documents.map(d=>`<div class="card"><div style="font-size:22px; margin-bottom:8px;">📄</div><div style="font-weight:600; font-size:13px;">${escapeHtml(d.nombre)}</div><div class="small-muted">${d.tipo} · ${fmtDate(d.fecha)}</div></div>`).join('')}
+  </div>` : emptyState('🗂️','Sin documentos','Agrega justificantes, evidencias o reportes guardados.', 'openNewDocModal()', 'Agregar documento')}
+  `;
+}
+function openNewDocModal(){
+  openModal(`
+    <div class="modal-head"><h3>Agregar documento</h3><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Nombre</label><input id="doc-nombre" placeholder="Ej. Acta de reunión"></div>
+      <div class="field"><label>Tipo</label><select id="doc-tipo"><option>Documento</option><option>Justificante</option><option>Evidencia</option><option>Reporte</option></select></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="createDoc()">Agregar</button></div>
+  `);
+}
+function createDoc(){
+  STATE.documents.push({id:uid('doc'), nombre:document.getElementById('doc-nombre').value.trim()||'Documento', tipo:document.getElementById('doc-tipo').value, fecha:new Date().toISOString()});
+  saveState(); closeModal(); toast('Documento agregado'); render();
+}
+
+/* ============================================================
+   VISTA: Expediente digital
+   ============================================================ */
+function viewExpediente(){
+  return `
+  <div class="view-head"><h1>Expediente digital</h1><div class="sub">Documentos, justificantes, evidencias y reportes por alumno, con permisos.</div></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Alumno</th><th>Grupo</th><th>Justificantes</th><th>Incidencias</th><th></th></tr></thead>
+      <tbody>
+        ${STATE.classes.flatMap(c=>c.alumnos.slice(0,6).map(a=>{
+          const j = STATE.justifications.filter(x=>x.studentId===a.id).length;
+          const i = STATE.incidents.filter(x=>x.studentId===a.id).length;
+          return `<tr><td>${escapeHtml(a.nombre)}</td><td>${c.grado}${c.grupo}</td><td>${j}</td><td>${i}</td>
+          <td><button class="btn btn-ghost btn-sm" onclick="toast('Expediente protegido por permisos — vista de docente titular')">Ver expediente</button></td></tr>`;
+        })).join('')}
+      </tbody>
+    </table>
+  </div>
+  <div class="small-muted" style="margin-top:10px;">Mostrando una muestra por grupo. La información del alumno se trata con privacidad y controles de acceso por rol.</div>
+  `;
+}
+
+/* ============================================================
+   VISTA: Configuración
+   ============================================================ */
+function viewConfiguracion(){
+  return `
+  <div class="view-head"><h1>Configuración</h1><div class="sub">Preferencias del sistema y de la escala de evaluación.</div></div>
+
+  <div class="section-title" style="margin-top:0;">Apariencia</div>
+  <div class="card flexrow" style="margin-bottom:16px;">
+    <div style="flex:1;"><b>Modo de color</b><div class="small-muted">Claro u oscuro para toda la aplicación.</div></div>
+    <button class="btn btn-outline btn-sm" onclick="toggleTheme()">${STATE.theme==='dark'?'☀️ Cambiar a claro':'🌙 Cambiar a oscuro'}</button>
+  </div>
+
+  <div class="section-title">Escala de evaluación</div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="small-muted" style="margin-bottom:8px;">Precisión de la calificación 0–10:</div>
+    <div class="pill-tabs" style="margin-bottom:0;">
+      ${[['enteros','Enteros'],['decimas','Décimas'],['centesimas','Centésimas']].map(([k,l])=>`
+        <button class="pill-tab ${STATE.escalaPrecision===k?'active':''}" onclick="setPrecision('${k}')">${l}</button>`).join('')}
+    </div>
+  </div>
+
+  <div class="section-title">Actividades no entregadas</div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="small-muted" style="margin-bottom:8px;">Política cuando un alumno no entrega:</div>
+    <div class="pill-tabs" style="margin-bottom:0;">
+      ${[['sin_calificar','Sin calificar'],['cero','Calificar 0'],['pendiente','Marcar pendiente']].map(([k,l])=>`
+        <button class="pill-tab ${STATE.politicaNoEntregado===k?'active':''}" onclick="setPolitica('${k}')">${l}</button>`).join('')}
+    </div>
+  </div>
+
+  <div class="section-title">Roles</div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="flexrow" style="flex-wrap:wrap; gap:8px;">
+      <span class="tag tag-success">Docente (tu rol activo)</span>
+      <span class="tag tag-gray">Administrador</span><span class="tag tag-gray">Directivo</span><span class="tag tag-gray">Coordinador</span>
+      <span class="tag tag-gray">Estudiante (en preparación)</span><span class="tag tag-gray">Tutor / familia (en preparación)</span>
+    </div>
+  </div>
+
+  <div class="section-title">Respaldo de tus datos</div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="small-muted" style="margin-bottom:10px;">JAC Educa guarda todo en este navegador. Descarga un respaldo de vez en cuando (por si cambias de celular, borras el caché o quieres pasar tus datos a otro dispositivo) y podrás restaurarlo cuando quieras.</div>
+    <div class="flexrow" style="gap:8px; flex-wrap:wrap;">
+      <button class="btn btn-outline btn-sm" onclick="downloadBackup()">⬇ Descargar respaldo (.json)</button>
+      <button class="btn btn-outline btn-sm" onclick="document.getElementById('backup-file').click()">⬆ Restaurar desde archivo</button>
+      <input type="file" id="backup-file" accept="application/json" style="display:none;" onchange="restoreBackup(this.files[0])">
+    </div>
+    <div class="small-muted" style="margin-top:8px;">Último guardado automático: <span id="cfg-save-status">${lastSavedAt? 'hace '+Math.round((Date.now()-lastSavedAt)/1000)+'s' : 'aún no'}</span></div>
+  </div>
+
+  <div class="section-title">Instalar en tu celular</div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="small-muted" style="margin-bottom:10px;">Puedes agregar JAC Educa como ícono en tu pantalla de inicio, para abrirla como una app:</div>
+    <div class="grid grid-2">
+      <div><b style="font-size:12.5px;">📱 iPhone (Safari)</b><div class="small-muted" style="margin-top:4px;">Toca el botón Compartir (⬆️) → "Agregar a pantalla de inicio".</div></div>
+      <div><b style="font-size:12.5px;">🤖 Android (Chrome)</b><div class="small-muted" style="margin-top:4px;">Toca el menú (⋮) → "Agregar a pantalla principal" o "Instalar app".</div></div>
+    </div>
+  </div>
+
+  <div class="section-title">Cuenta</div>
+  <div class="card">
+    <div class="field"><label>Nombre</label><input value="${escapeHtml(STATE.docente.nombre)}" disabled></div>
+    <div class="field"><label>Correo</label><input value="${escapeHtml(STATE.docente.correo)}" disabled></div>
+    <button class="btn btn-outline btn-sm" onclick="logout()">Cerrar sesión</button>
+  </div>
+  `;
+}
+function downloadBackup(){
+  const blob = new Blob([JSON.stringify(STATE,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `jac-educa-respaldo-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+  toast('Respaldo descargado', 'success');
+}
+function restoreBackup(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    try{
+      const data = JSON.parse(e.target.result);
+      if(!data.escuela || !data.classes){ toast('El archivo no parece un respaldo válido de JAC Educa', 'alert'); return; }
+      STATE = data;
+      saveState();
+      toast('Respaldo restaurado', 'success');
+      render();
+    }catch(err){ toast('No se pudo leer el archivo', 'alert'); }
+  };
+  reader.readAsText(file);
+}
+function setPrecision(p){ STATE.escalaPrecision=p; saveState(); toast('Precisión actualizada'); render(); }
+function setPolitica(p){ STATE.politicaNoEntregado=p; saveState(); toast('Política actualizada'); render(); }
+
+/* ============================================================
+   Arranque
+   ============================================================ */
+function boot(){
+  loadState();
+  document.documentElement.setAttribute('data-theme', STATE.theme==='dark'?'dark':'light');
+  if(STATE.session){
+    document.getElementById('auth-screen').style.display='none';
+    document.getElementById('app-shell').classList.add('active');
+    if(!location.hash) location.hash='#/inicio';
+    render();
+  } else {
+    renderAuth();
+  }
+}
+boot();
+</script>
+
+</body>
+</html>
